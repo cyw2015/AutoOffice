@@ -10,13 +10,16 @@
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<!-- mybatis版本号 -->
 		<mybatis.version>3.4.0</mybatis.version>
+		<!-- junit版本 -->
+		<junit.version>4.12</junit.version>
+		<security.version>4.0.4.RELEASE</security.version>
 	</properties>
 	<dependencies>
-		<!--测试  -->
+		<!--测试 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit.version}</version>
 			<!-- 表示开发的时候引入，发布的时候不会加载此包 -->
 			<scope>test</scope>
 		</dependency>
@@ -25,8 +28,8 @@
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 		</dependency>
-		
-		<!-- spring  -->
+
+		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -42,14 +45,29 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
-		<!-- JSTL标签类 -->  
-        <dependency>  
-            <groupId>jstl</groupId>  
-            <artifactId>jstl</artifactId>  
-            <version>1.2</version>  
-        </dependency>  
-        
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${security.version}</version>
+		</dependency>
+		<!-- JSTL标签类 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 		<!-- 映入JSON -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -66,7 +84,7 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.7.4</version>
 		</dependency>
-		
+
 		<!-- jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -96,16 +114,16 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+
 		<!-- 日志 -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>
