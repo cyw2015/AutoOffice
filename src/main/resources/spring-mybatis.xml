@@ -73,7 +73,7 @@
 
 		<!-- 尝试访问没有权限的页面时跳转的页面  -->
 		<security:access-denied-handler
-			error-page="/commons/403.jsp" />
+			error-page="/WEB-INF/error/403.jsp" />
 		
 		<!-- 退出配置 logout-success-url:退出成功后跳转的页面 , 
 		如果session配置了invalid-session-url默认跳转到指定的页面，
