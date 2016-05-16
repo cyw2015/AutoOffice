@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.sys.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.cyw.office.entity.sys.User" >
+    <id column="USER_CODE" property="userCode" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="DECIMAL" />
+    <result column="ISSYS" property="issys" jdbcType="DECIMAL" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="DEADLINE" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN" property="lastLogin" jdbcType="TIMESTAMP" />
+    <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    USER_CODE, ID, USER_NAME, USER_PASSWORD, ENABLED, ISSYS, CREATEDATE, DEADLINE, LAST_LOGIN, 
+    LOGIN_COUNT, REMARK, CREATER
+  </sql>
+  
+  <select id="findByUserCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_USERS
+    where USER_CODE = #{userCode,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

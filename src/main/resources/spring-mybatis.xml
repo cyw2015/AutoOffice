@@ -43,7 +43,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath:com/cyw/office/mapping/*.xml"></property>
+		<property name="mapperLocations" value="classpath:com/cyw/office/mapping/**/*.xml"></property>
 	</bean>
 
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
@@ -64,7 +64,7 @@
 	<security:http security="none" pattern="/static/**" />
 	
 	<security:http auto-config='true' use-expressions="false">
-		<security:intercept-url pattern="/**" access="ROLE_USER"/>
+		<!-- <security:intercept-url pattern="/**" access="RES_SYS_MAIN"/> -->
 		<security:form-login login-page="/login.jsp"
 			authentication-failure-url="/login.jsp?error=true"
 			default-target-url="/index.jsp" always-use-default-target="true"
@@ -114,12 +114,17 @@
 	<bean id="userDetailsService" class="com.cyw.office.security.MyUserDetailService"></bean>
 
 	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
-	<bean id="myAccessDecisionManagerBean" class="com.cyw.office.security.MyAccessDecisionManager"></bean>
+	<bean id="myAccessDecisionManagerBean" class="com.cyw.office.security.MyAccessDecisionManager">
+	</bean>
 
 	<!-- 资源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色访问 -->
 	<bean id="mySecurityMetadataSource"
-		class="com.cyw.office.security.MyInvocationSecurityMetadataSourceService"></bean>
-
+		class="com.cyw.office.security.MyInvocationSecurityMetadataSourceService">
+		<constructor-arg >
+			<ref bean="resService"/>
+		</constructor-arg>
+		</bean>
+	<bean id="resService" class="com.cyw.office.service.impl.ResServiceImpl"></bean>
 	<!-- 提示语 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

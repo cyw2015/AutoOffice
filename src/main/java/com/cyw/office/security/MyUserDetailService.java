@@ -2,14 +2,20 @@ package com.cyw.office.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.cyw.office.entity.sys.Resource;
+import com.cyw.office.entity.sys.User;
+import com.cyw.office.service.IResService;
+import com.cyw.office.service.IUserService;
 
 /**
  * 从数据库中读入用户的密码，角色信息，是否锁定，账号是否过期
@@ -19,29 +25,35 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MyUserDetailService implements UserDetailsService {
-	// @Autowired
-	// private UserMapper userMapper;
+	 
+	 @Autowired
+	 private IUserService userService;
+	 @Autowired
+	 private IResService resService;
+	 
 	// 登陆验证时，通过username获取用户的所有权限信息，
 	// 并返回User放到spring的全局缓存SecurityContextHolder中，以供授权器使用
-	public UserDetails loadUserByUsername(String username)
+	public UserDetails loadUserByUsername(String usercode)
 			throws UsernameNotFoundException {
+		
+		// 使用User服务类查询数据用户是否存在,如不存在或密码错误则抛出对应的异常  
+        User user = this.userService.findByUserCode(usercode);  
+        if (null == user)  
+            throw new UsernameNotFoundException("用户/密码错误,请重新输入!");  
+        System.out.println(user.getUserCode()+"|"+user.getUserPassword());
+        
 		Collection<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		// 取得用户权限
-//		List<Authority> auth = userMapper.findAuthByUserName(username);
-		GrantedAuthority auth2 = new SimpleGrantedAuthority("ROLE_ADMIN");
-		GrantedAuthority auth1 = new SimpleGrantedAuthority("ROLE_USER");
-//		String password = null;
-		// 取得用户的密码
-		// password = userMapper.findUserByname(username).get(0);
-		
-		if (username.equals("lcy")) {
-			auths = new ArrayList<GrantedAuthority>();
-			auths.add(auth1);
-			auths.add(auth2);
-		}
-		
-		User user = new User(username, "e290c5be371f47157fbf413e0080dc5d", true, true, true, true, auths);
-		return user;
+		List<Resource> ress = resService.findResByUserCode(usercode);
+		 if (null == ress || ress.isEmpty())  
+	            throw new UsernameNotFoundException("权限不足!");  
+		// 把权限赋值给当前对象  
+		 for(Resource res : ress){
+			 System.out.println(res.getResourceCode()+"|"+res.getResourceName());
+			 auths.add(new SimpleGrantedAuthority(res.getResourceCode()));
+		 }
+		org.springframework.security.core.userdetails.User userDetail= new org.springframework.security.core.userdetails.User(usercode, user.getUserPassword(), user.getEnabled()==1?true:false, true, true, true, auths);
+		return userDetail;
 	}
 
 }
