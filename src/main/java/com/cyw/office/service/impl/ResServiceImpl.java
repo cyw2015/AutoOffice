@@ -22,4 +22,8 @@ public class ResServiceImpl implements IResService {
 		return this.resourceMapper.findAllRes();
 	}
 
+	public List<Resource> findResTree(String id) {
+		return this.resourceMapper.findResTree(id);
+	}
+
 }

@@ -9,5 +9,7 @@ public interface ResourceMapper {
 	List<Resource> findResByUserCode(String usercode);
 
 	List<Resource> findAllRes();
+
+	List<Resource> findResTree(String id);
    
 }

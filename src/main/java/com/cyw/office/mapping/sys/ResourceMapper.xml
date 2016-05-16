@@ -31,4 +31,9 @@
 	<select id="findAllRes" resultMap="BaseResultMap">
 		select * from t_resources
 	</select>
+	
+	<select id="findResTree" resultMap="BaseResultMap">
+		select * from t_resources  r where  r.parent=#{id}
+	</select>
+	
 </mapper>

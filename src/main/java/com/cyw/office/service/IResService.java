@@ -11,4 +11,6 @@ public interface IResService {
 
 	List<Resource> findAllRes();
 
+	List<Resource> findResTree(String id);
+
 }
