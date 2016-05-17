@@ -27,4 +27,8 @@ public class UserServiceImpl implements IUserService {
 		return this.userMapper.getUserPage(paramsMap);
 	}
 
+	public void insert(Map<String, Object> paramsMap) {
+		this.userMapper.insert(paramsMap);
+	}
+
 }

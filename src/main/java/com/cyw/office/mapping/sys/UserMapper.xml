@@ -44,4 +44,14 @@
 		where t.rowIndex > #{start }
 			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
 	</select>
+	 <insert id="insert" parameterType="java.util.HashMap" >
+    insert into T_USERS ( ID,USER_CODE, USER_NAME, 
+      USER_PASSWORD, ENABLED, ISSYS, 
+      CREATEDATE, DEADLINE,  REMARK, CREATER
+      )
+    values (seq_t_users_id.nextval,#{userCode,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},
+    #{password,jdbcType=VARCHAR}, #{enabled,jdbcType=DECIMAL},#{isSys,jdbcType=DECIMAL},sysdate,
+     to_date( #{deadLine},'yyyy-MM-dd'),  #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}
+      )
+  </insert>
 </mapper>

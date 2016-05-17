@@ -60,5 +60,15 @@ var ctx = '${staticPath }';
 		<div id="tabs">
 		</div>
 	</div>
+	<!-- 菜单 -->
+	 <div id="mm" class="easyui-menu" style="width: 160px;">
+		<div id="mm-tabclose" name="6">刷新</div>
+		<div id="Div1" name="1">关闭</div>
+		<div id="mm-tabcloseall" name="2">全部关闭</div>
+		<div id="mm-tabcloseother" name="3">除此之外全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="mm-tabcloseright" name="4">当前页右侧全部关闭</div>
+		<div id="mm-tabcloseleft" name="5">当前页左侧全部关闭</div>
+	</div>
 </body>
 </html>

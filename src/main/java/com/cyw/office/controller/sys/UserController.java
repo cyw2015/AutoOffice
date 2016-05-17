@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cyw.office.entity.sys.User;
 import com.cyw.office.service.IUserService;
+import com.cyw.office.util.CommonUtil;
+import com.cyw.office.util.MD5Util;
 import com.cyw.office.util.PageBean;
 
 @Controller
@@ -35,7 +37,7 @@ public class UserController {
 			HttpServletResponse response) {
 		return new ModelAndView("sys/user");
 	}
-
+	
 	/**
 	 * 获取用户信息
 	 * 
@@ -95,6 +97,46 @@ public class UserController {
 		} catch (Exception e) {
 			obj.put("rows", "");
 			obj.put("total", 0);
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value = "/addUser.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject addUser(HttpServletRequest request,HttpServletResponse response){
+		String userCode = request.getParameter("userCode");
+		String userName = request.getParameter("userName");
+		String enabled = request.getParameter("enabled");
+		String isSys = request.getParameter("isSys");
+		String deadLine = request.getParameter("deadLine");
+		String remark = request.getParameter("remark");
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("userCode", userCode);
+		paramsMap.put("userName",userName);
+		paramsMap.put("password", MD5Util.string2MD5(userCode));
+		paramsMap.put("enabled", enabled);
+		paramsMap.put("isSys", isSys);
+		paramsMap.put("deadLine", deadLine);
+		paramsMap.put("remark", remark);
+		//获取当前登录用户
+		paramsMap.put("creater",CommonUtil.getLoginUserName());
+		JSONObject obj = new JSONObject();
+		try{
+			//查询账号是否存在
+			User user = userService.findByUserCode(userCode);
+			if(user!=null){
+				obj.put("error",'1');
+				obj.put("errorMsg","账号已存在");
+				return obj;
+			}else{
+				userService.insert(paramsMap);
+				obj.put("error",'0');
+			}
+			//插入
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","插入失败");
 			e.printStackTrace();
 		}
 		return obj;

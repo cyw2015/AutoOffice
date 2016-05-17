@@ -10,4 +10,6 @@ public interface UserMapper {
 	 User findByUserCode(String usercode);
 
 	List<User> getUserPage(Map<String, Object> paramsMap);
+
+	void insert(Map<String, Object> paramsMap);
 }

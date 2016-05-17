@@ -9,4 +9,6 @@ public interface IUserService {
 	public User findByUserCode(String usercode);
 
 	public List<User> getUserPage(Map<String, Object> paramsMap);
+
+	public void insert(Map<String, Object> paramsMap);
 }
