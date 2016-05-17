@@ -14,7 +14,6 @@
 		<result column="URL" property="url" jdbcType="VARCHAR" />
 		<result column="PARENT" property="parent" jdbcType="DECIMAL" />
 		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
-		<result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="findResByUserCode" parameterType="java.lang.String"
 		resultMap="BaseResultMap">

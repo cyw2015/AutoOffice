@@ -26,8 +26,17 @@ public class User {
     private String remark;
 
     private String creater;
+    private String totalCount;
 
-    public String getUserCode() {
+    public String getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(String totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public String getUserCode() {
         return userCode;
     }
 

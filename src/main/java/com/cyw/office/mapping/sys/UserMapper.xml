@@ -14,6 +14,7 @@
     <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     USER_CODE, ID, USER_NAME, USER_PASSWORD, ENABLED, ISSYS, CREATEDATE, DEADLINE, LAST_LOGIN, 
@@ -27,4 +28,20 @@
     where USER_CODE = #{userCode,jdbcType=VARCHAR}
   </select>
   
+ <!--  getUserPage -->
+   <select id="getUserPage" parameterType="java.util.HashMap"  resultMap="BaseResultMap"  >
+	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select u.*,
+     	 	count(1) over() totalCount
+			from t_users u
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	</select>
 </mapper>

@@ -19,7 +19,11 @@
    		</div>
    	</div>
 	<table id="resTable"></table>
-	
+	<!-- 新增 -->
+ 	 <form id="resRow_add" style="margin:0;padding:5px 0 0 25px;display:none">
+		<p>账户:<input type="text"  name="test" style="width:200px;" /></p>
+   		<p>密码:<input type="text"  name="password_add" style="width:200px;" /></p>
+	</form>
 	<script type="text/javascript" src="${staticPath }/static/js/sys/resource.js"></script>
 </body>
 </html>

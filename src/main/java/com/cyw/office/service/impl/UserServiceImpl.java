@@ -1,5 +1,8 @@
 package com.cyw.office.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,13 @@ public class UserServiceImpl implements IUserService {
 	
 	public User findByUserCode(String usercode) {
 		return this.userMapper.findByUserCode(usercode);
+	}
+
+	/**
+	 * 用户数据
+	 */
+	public List<User> getUserPage(Map<String, Object> paramsMap) {
+		return this.userMapper.getUserPage(paramsMap);
 	}
 
 }

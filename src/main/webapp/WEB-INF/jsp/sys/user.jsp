@@ -1,0 +1,20 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ include file="/commons/global.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>用户管理</title>
+<%@ include file="/commons/basejs.jsp"%>
+</head>
+<body>
+	<div id="userTable_tool" style="padding:5px;">
+   		<div style="margin-bottom:5px">
+   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="userTable_tool.add();">增加用户</a>
+   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="userTable_tool.edit();">修改用户</a>
+   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="userTable_tool.remove();">删除</a>
+   		</div>
+   	</div>
+	<table id="userTable"></table>
+	<script type="text/javascript" src="${staticPath }/static/js/sys/user.js"></script>
+</body>
+</html>

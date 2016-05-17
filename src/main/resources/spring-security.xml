@@ -9,7 +9,10 @@
 	<http security="none" pattern="/login.jsp" />
 	<http security="none" pattern="/commons/**" />
 	<http security="none" pattern="/static/**" />
-
+	<http security="none" pattern="/403.jsp" />
+	<http security="none" pattern="/404.jsp" />
+	<http security="none" pattern="/500.jsp" />
+	<http security="none" pattern="/sessionTimeout.jsp*" />
 	<http auto-config='true' use-expressions="true">
 		<!-- 登录页面 -->
 		<form-login login-page="/login.jsp"
@@ -27,7 +30,7 @@
 			invalidate-session="true" />
 
 		<!-- 设置会话数 -->
-		<session-management>
+		<session-management invalid-session-url="/sessionTimeout.jsp">
 			<concurrency-control max-sessions="1"
 				error-if-maximum-exceeded="true" />
 		</session-management>

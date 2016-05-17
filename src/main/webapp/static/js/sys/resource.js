@@ -39,7 +39,14 @@ $(document).ready(function() {
 		} ,{
 			field : 'type',
 			title : '类型',
-			width : 100
+			width : 100,
+			formatter:function(value,row,index){
+				if(value=='1'){
+					return "菜单";
+				}else{
+					return "功能";
+				}
+			}
 		},{
 			field : 'iconcls',
 			title : '图标',
@@ -57,5 +64,33 @@ $(document).ready(function() {
 			title : '备注',
 			width : 100
 		}]]
-	})
+	});
+	resTable_tool ={
+		add: function() {
+			$('#resRow_add').dialog('open').form('reset');
+//			$('input[name="username_add"]').focus();
+		}
+	}
+	
+	$('#resRow_add').show().dialog({
+	    title: '添加资源',
+	    width: 400,
+	    height: 200,
+	    closed: true,
+	    cache: false,
+	    modal: true,
+	    border:'thin',cls:'c6',
+	    buttons : [ {
+			text : '提交',
+			iconCls : 'icon-save',
+			handler : function(){
+			}
+		}, {
+			text : '取消',
+			iconCls : 'icon-redo',
+			handler : function() {
+				$('#resRow_add').dialog('close').form('reset');
+			}
+		} ]
+	});
 });

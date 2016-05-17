@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css"
 	href="${staticPath }/static/css/login.css">
 	<script type="text/javascript" src="${staticPath }/static/js/login.js"></script>
-
 </head>
 
 <body>

@@ -5,19 +5,23 @@
 <head>
 <title>权限管理</title>
 <%@ include file="/commons/basejs.jsp"%>
-
 </head>
 
 <body>
 	<div id="authTable_tool" style="padding:5px;">
-   		<div style="margin-bottom:5px">
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="authTable_tool.add();">增加权限</a>
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="authTable_tool.edit();">修改权限</a>
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="authTable_tool.remove();">删除</a>
-   		</div>
-   	</div>
+		<div style="margin-bottom:5px">
+			<a href="javascript:void(0);" class="easyui-linkbutton"
+				iconCls="icon-add" plain="true" onclick="authTable_tool.add();">增加权限</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton"
+				iconCls="icon-edit" plain="true" onclick="authTable_tool.edit();">修改权限</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton"
+				iconCls="icon-remove" plain="true"
+				onclick="authTable_tool.remove();">删除</a>
+		</div>
+	</div>
 	<table id="authTable"></table>
-	
-	<script type="text/javascript" src="${staticPath }/static/js/sys/auth.js"></script>
+	<script type="text/javascript"
+		src="${staticPath }/static/js/sys/auth.js"></script>
+
 </body>
 </html>
