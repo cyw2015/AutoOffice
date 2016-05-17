@@ -14,6 +14,7 @@
 		<result column="URL" property="url" jdbcType="VARCHAR" />
 		<result column="PARENT" property="parent" jdbcType="DECIMAL" />
 		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="findResByUserCode" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
@@ -36,4 +37,20 @@
 		select * from t_resources  r where  r.parent=#{id}
 	</select>
 	
+	<select id="getResPage" parameterType="java.util.HashMap"  resultType="com.cyw.office.entity.sys.Resource" >
+	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select  re.id ,re.resource_code as resourceCode,re.resource_name as resourceName,
+      		re.resource_desc as resourceDesc,re.state ,re.type ,re.iconcls,re.url,re.parent,re.remark ,
+     	 	count(1) over() totalCount
+			from t_resources re 
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	</select>
 </mapper>

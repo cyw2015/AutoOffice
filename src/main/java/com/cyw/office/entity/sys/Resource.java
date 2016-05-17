@@ -21,7 +21,18 @@ public class Resource {
 
     private String remark;
 
-    public String getResourceCode() {
+    private String totalCount;
+    
+    
+    public String getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(String totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public String getResourceCode() {
         return resourceCode;
     }
 

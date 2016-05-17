@@ -1,6 +1,7 @@
 package com.cyw.office.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class ResServiceImpl implements IResService {
 
 	public List<Resource> findResTree(String id) {
 		return this.resourceMapper.findResTree(id);
+	}
+
+	public List<Resource> getResPage(Map<String, Object> paramsMap) {
+		return this.resourceMapper.getResPage(paramsMap);
 	}
 
 }

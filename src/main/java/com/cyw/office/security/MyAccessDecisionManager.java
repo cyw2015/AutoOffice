@@ -17,7 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @author cyw
  * 
  */
-public class MyAccessDecisionManager implements AccessDecisionManager {
+public class MyAccessDecisionManager   implements AccessDecisionManager {
 
 	// 检查用户是否够权限访问资源
 	// 参数authentication是从spring的全局缓存SecurityContextHolder中拿到的，里面是用户的权限信息
