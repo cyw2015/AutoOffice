@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.sys.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.cyw.office.entity.sys.Authority" >
+    <id column="AUTHORITY_CODE" property="authorityCode" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="AUTHORITY_NAME" property="authorityName" jdbcType="VARCHAR" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+     <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AUTHORITY_CODE, ID, AUTHORITY_NAME, CREATEDATE, CREATER, ENABLED, REMARK
+  </sql>
+  <!--  权限数据 -->
+   <select id="getAuthPage" parameterType="java.util.HashMap"  resultMap="BaseResultMap"  >
+	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select au.*,
+     	 	count(1) over() totalCount
+			from t_authorities au
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	</select>
+  
+  	<select id="findByAuthCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_authorities
+	    where authority_code = #{authCode,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insert" parameterType="java.util.HashMap" >
+    insert into T_AUTHORITIES (ID,AUTHORITY_CODE,  AUTHORITY_NAME, 
+      CREATEDATE, CREATER, 
+      REMARK)
+    values ( seq_t_authorities_id.nextval,#{authCode,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, 
+     sysdate, #{creater,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <!--  -->
+  <update id="updateByAuthCode" parameterType="java.util.HashMap" >
+    update T_AUTHORITIES
+    set
+      AUTHORITY_NAME = #{authName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where AUTHORITY_CODE = #{authCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!--删除权限  -->
+  <delete id="deleteAuthsByIds" parameterType="java.lang.String" >
+    delete from T_AUTHORITIES
+ 	where AUTHORITY_CODE in 
+    <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+    	#{item}
+    </foreach>
+  </delete>
+</mapper>

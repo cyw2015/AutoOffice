@@ -119,7 +119,7 @@ public class RoleController {
 					obj.put("error",'0');
 				}else{
 					obj.put("error",'1');
-					obj.put("errorMsg","角色编码已存在");
+					obj.put("errorMsg","插入失败");
 				}
 			}
 		}catch(Exception e){
