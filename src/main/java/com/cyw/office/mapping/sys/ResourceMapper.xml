@@ -19,13 +19,12 @@
 		resultMap="BaseResultMap">
 		select re.*
 		from t_users u
-		left join t_users_roles tur on u.user_code=tur.user_code
-		left join t_roles r on tur.role_code = r.role_code
-		left join t_roles_authorities tra on r.role_code = tra.role_code
-		left join t_authorities au on tra.authority_code = au.authority_code
-		left join t_authorities_resources tar on au.authority_code =
-		tar.authority_code
-		left join t_resources re on tar.resource_code = re.resource_code
+		 join t_users_roles tur on u.user_code=tur.user_code
+		 join t_roles r on tur.role_code = r.role_code
+		 join t_roles_authorities tra on r.role_code = tra.role_code
+		 join t_authorities au on tra.authority_code = au.authority_code
+		 join t_authorities_resources tar on au.authority_code =  tar.authority_code
+		 join t_resources re on tar.resource_code = re.resource_code
 		where u.user_code = #{userCode,jdbcType=VARCHAR}
 	</select>
 	<select id="findAllRes" resultMap="BaseResultMap">

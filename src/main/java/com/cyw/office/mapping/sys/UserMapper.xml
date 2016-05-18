@@ -54,4 +54,29 @@
      to_date( #{deadLine},'yyyy-MM-dd'),  #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}
       )
   </insert>
+  
+  <!-- 更新 -->
+  <update id="updateByPrimaryKey" parameterType="java.util.HashMap" >
+    update T_USERS
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=DECIMAL},
+      ISSYS = #{isSys,jdbcType=DECIMAL},
+      DEADLINE = to_date(#{deadLine},'yyyy-MM-dd'),
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where USER_CODE = #{userCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 更新特定字段  -->
+   <update id="resetPassword" parameterType="java.util.HashMap" >
+    update T_USERS set 
+    USER_PASSWORD = #{password,jdbcType=VARCHAR}
+    where USER_CODE = #{userCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!--deleteUsers  -->
+  <delete id="deleteUsers" parameterType="java.lang.String" >
+    delete from T_USERS
+    where user_code in <foreach collection="array" item="item" index="index" 
+open="(" separator="," close=")">#{item}</foreach>
+  </delete>
 </mapper>

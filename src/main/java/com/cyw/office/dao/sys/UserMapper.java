@@ -12,4 +12,10 @@ public interface UserMapper {
 	List<User> getUserPage(Map<String, Object> paramsMap);
 
 	void insert(Map<String, Object> paramsMap);
+
+	int updateByPrimaryKey(Map<String, Object> paramsMap);
+
+	int resetPassword(Map<String, Object> paramsMap);
+
+	int deleteUsers(String[] userCodes);
 }

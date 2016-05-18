@@ -31,4 +31,19 @@ public class UserServiceImpl implements IUserService {
 		this.userMapper.insert(paramsMap);
 	}
 
+	/**
+	 * 更新用户
+	 */
+	public int updateByPrimaryKey(Map<String, Object> paramsMap) {
+		return this.userMapper.updateByPrimaryKey(paramsMap);
+	}
+
+	public int resetPassword(Map<String, Object> paramsMap) {
+		return this.userMapper.resetPassword(paramsMap);
+	}
+
+	public int deleteUsers(String[] userCodes) {
+		return this.userMapper.deleteUsers(userCodes);
+	}
+
 }

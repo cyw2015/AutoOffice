@@ -141,4 +141,84 @@ public class UserController {
 		}
 		return obj;
 	}
+	
+	@RequestMapping(value = "/updateUser.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject updateUser(HttpServletRequest request,HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		String userCode = request.getParameter("userCode");
+		String userName = request.getParameter("userName");
+		String enabled = request.getParameter("enabled");
+		String isSys = request.getParameter("isSys");
+		String deadLine = request.getParameter("deadLine");
+		String remark = request.getParameter("remark");
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("userCode", userCode);
+		paramsMap.put("userName",userName);
+		paramsMap.put("enabled", enabled);
+		paramsMap.put("isSys", isSys);
+		paramsMap.put("deadLine", deadLine);
+		paramsMap.put("remark", remark);
+		try{
+			int result=userService.updateByPrimaryKey(paramsMap);
+			if(result!=0){
+				obj.put("error",'0');
+			}else{
+				obj.put("error",'1');
+				obj.put("errorMsg","修改失败");
+			}
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","修改失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value = "/resetPassword.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject resetPassword(HttpServletRequest request,HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		String userCode = request.getParameter("userCode");
+		String password=MD5Util.string2MD5(userCode);
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("userCode", userCode);
+		paramsMap.put("password",password);
+		try{
+			int result=userService.resetPassword(paramsMap);
+			if(result!=0){
+				obj.put("error",'0');
+			}else{
+				obj.put("error",'1');
+				obj.put("errorMsg","重置密码失败");
+			}
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","重置密码失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value = "/deleteUsers.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject deleteUsers(HttpServletRequest request,HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		String ids = request.getParameter("ids");
+		String[] userCodes = ids.split(","); 
+		try{
+			int result=userService.deleteUsers(userCodes);
+			if(result!=0){
+				obj.put("error",'0');
+			}else{
+				obj.put("error",'1');
+				obj.put("errorMsg","删除失败");
+			}
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","删除失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }

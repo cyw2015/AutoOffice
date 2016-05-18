@@ -31,8 +31,8 @@
 
 		<!-- 设置会话数 -->
 		<session-management invalid-session-url="/sessionTimeout.jsp">
-			<concurrency-control max-sessions="1"
-				error-if-maximum-exceeded="true" />
+			<!-- <concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true" /> -->
 		</session-management>
 
 		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />

@@ -45,12 +45,15 @@ public class MyUserDetailService implements UserDetailsService {
 		Collection<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		// 取得用户权限
 		List<Resource> ress = resService.findResByUserCode(usercode);
+	     System.out.println("size="+ress.size());
 		 if (null == ress || ress.isEmpty())  
 	            throw new UsernameNotFoundException("权限不足!");  
 		// 把权限赋值给当前对象  
-		 for(Resource res : ress){
-			 System.out.println(res.getResourceCode()+"|"+res.getResourceName());
-			 auths.add(new SimpleGrantedAuthority(res.getResourceCode()));
+		 else{
+			 for(Resource res : ress){
+				 System.out.println(res.getResourceCode()+"|"+res.getResourceName());
+				 auths.add(new SimpleGrantedAuthority(res.getResourceCode()));
+			 }
 		 }
 		org.springframework.security.core.userdetails.User userDetail= new org.springframework.security.core.userdetails.User(usercode, user.getUserPassword(), user.getEnabled()==1?true:false, true, true, true, auths);
 		return userDetail;

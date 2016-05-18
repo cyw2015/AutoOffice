@@ -11,4 +11,10 @@ public interface IUserService {
 	public List<User> getUserPage(Map<String, Object> paramsMap);
 
 	public void insert(Map<String, Object> paramsMap);
+
+	public int updateByPrimaryKey(Map<String, Object> paramsMap);
+
+	public int resetPassword(Map<String, Object> paramsMap);
+
+	public int deleteUsers(String[] userCodes);
 }
