@@ -72,7 +72,7 @@
 		</beans:constructor-arg>
 	</beans:bean>
 
-	<beans:bean id="resService" class="com.cyw.office.service.impl.ResServiceImpl"></beans:bean>
+	<beans:bean id="resService" class="com.cyw.office.service.sys.impl.ResServiceImpl"></beans:bean>
 
 	<!-- 提示语 -->
 	<beans:bean id="messageSource"

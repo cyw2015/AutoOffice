@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.cyw.office.entity.sys.Resource;
 import com.cyw.office.entity.sys.User;
-import com.cyw.office.service.IResService;
-import com.cyw.office.service.IUserService;
+import com.cyw.office.service.sys.IResService;
+import com.cyw.office.service.sys.IUserService;
 
 /**
  * 从数据库中读入用户的密码，角色信息，是否锁定，账号是否过期

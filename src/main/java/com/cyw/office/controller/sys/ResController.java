@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cyw.office.entity.sys.Resource;
-import com.cyw.office.service.IResService;
+import com.cyw.office.service.sys.IResService;
 import com.cyw.office.util.PageBean;
 
 @Controller

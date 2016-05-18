@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cyw.office.entity.sys.User;
-import com.cyw.office.service.IUserService;
+import com.cyw.office.service.sys.IUserService;
 import com.cyw.office.util.CommonUtil;
 import com.cyw.office.util.MD5Util;
 import com.cyw.office.util.PageBean;

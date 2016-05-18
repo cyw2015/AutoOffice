@@ -14,7 +14,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Service;
 
 import com.cyw.office.entity.sys.Resource;
-import com.cyw.office.service.IResService;
+import com.cyw.office.service.sys.IResService;
 
 /**
  * 资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色访问
