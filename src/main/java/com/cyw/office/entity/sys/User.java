@@ -2,7 +2,9 @@ package com.cyw.office.entity.sys;
 
 import java.util.Date;
 
-public class User {
+import com.cyw.office.util.BaseEntity;
+
+public class User extends BaseEntity {
     private String userCode;
 
     private Integer id;
@@ -26,15 +28,7 @@ public class User {
     private String remark;
 
     private String creater;
-    private String totalCount;
-
-    public String getTotalCount() {
-		return totalCount;
-	}
-
-	public void setTotalCount(String totalCount) {
-		this.totalCount = totalCount;
-	}
+  
 
 	public String getUserCode() {
         return userCode;

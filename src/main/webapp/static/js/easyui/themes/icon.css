@@ -94,3 +94,21 @@
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
 }
+
+/*自定义 */
+.icon-system{
+	background:url('icons/office/system.png') no-repeat center center;
+}
+.icon-user{
+	background:url('icons/office/user.png') no-repeat center center;
+}
+.icon-role{
+	background:url('icons/office/role.png') no-repeat center center;
+}
+.icon-resource{
+	background:url('icons/office/resource.png') no-repeat center center;
+}
+.icon-auth{
+	background:url('icons/office/auth.png') no-repeat center center;
+}
+

@@ -1,6 +1,8 @@
 package com.cyw.office.entity.sys;
 
-public class Resource {
+import com.cyw.office.util.BaseEntity;
+
+public class Resource extends BaseEntity {
     private String resourceCode;
 
     private Integer id;
@@ -20,17 +22,6 @@ public class Resource {
     private Integer parent;
 
     private String remark;
-
-    private String totalCount;
-    
-    
-    public String getTotalCount() {
-		return totalCount;
-	}
-
-	public void setTotalCount(String totalCount) {
-		this.totalCount = totalCount;
-	}
 
 	public String getResourceCode() {
         return resourceCode;

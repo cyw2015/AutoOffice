@@ -410,9 +410,6 @@ $(document).ready(function() {
 		} ]
 	});
 	
-	
-	
-	
 	userTable_tool={
 		add: function() {
 			$('#userTable_add').dialog('open').form('reset');

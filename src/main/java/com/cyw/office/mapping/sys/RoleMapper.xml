@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.sys.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.cyw.office.entity.sys.Role" >
+    <id column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_CODE, ID, ROLE_NAME, CREATEDATE, CREATER, ENABLED, REMARK
+  </sql>
+   <!--  getRolePage -->
+   <select id="getRolePage" parameterType="java.util.HashMap"  resultMap="BaseResultMap"  >
+	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select r.*,
+     	 	count(1) over() totalCount
+			from t_roles r
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	</select>
+	
+	<select id="findByRoleCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_roles
+	    where role_CODE = #{roleCode,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insert" parameterType="java.util.HashMap" >
+    insert into T_ROLES (ID,ROLE_CODE,  ROLE_NAME, 
+      CREATEDATE, CREATER,
+      REMARK)
+    values (seq_t_roles_id.nextval,#{roleCode,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR}, 
+      sysdate, #{creater,jdbcType=VARCHAR},  
+      #{remark,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<!-- 更新角色信息 -->
+  <update id="updateByRoleCode" parameterType="java.util.HashMap" >
+    update T_ROLES
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ROLE_CODE = #{roleCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!--删除角色  -->
+  <delete id="deleteRolesByIds" parameterType="java.lang.String" >
+    delete from T_ROLES
+    where role_code in 
+    <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+    	#{item}
+    </foreach>
+  </delete>
+  
+</mapper>

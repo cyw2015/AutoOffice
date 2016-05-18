@@ -1,6 +1,5 @@
 package com.cyw.office.controller.sys;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cyw.office.entity.sys.User;
 import com.cyw.office.service.sys.IUserService;
 import com.cyw.office.util.CommonUtil;
+import com.cyw.office.util.DateUtil;
 import com.cyw.office.util.MD5Util;
 import com.cyw.office.util.PageBean;
 
@@ -30,7 +30,6 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
 	@RequestMapping(value = "/users.do")
 	public ModelAndView main(HttpServletRequest request,
@@ -77,12 +76,12 @@ public class UserController {
 					objInfo.put("creater", user.getCreater());
 					if (user.getCreatedate() != null)
 						objInfo.put("createdate",
-								fmt.format(user.getCreatedate()));
+								DateUtil.format(user.getCreatedate()));
 					if (user.getDeadline() != null)
-						objInfo.put("deadline", fmt.format(user.getDeadline()));
+						objInfo.put("deadline", DateUtil.format(user.getDeadline()));
 					if (user.getLastLogin() != null)
 						objInfo.put("last_login",
-								fmt.format(user.getLastLogin()));
+								DateUtil.format(user.getLastLogin()));
 					objInfo.put("login_count", user.getLoginCount());
 					objInfo.put("remark", user.getRemark());
 
