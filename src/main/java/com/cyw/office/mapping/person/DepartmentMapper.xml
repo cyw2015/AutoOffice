@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.person.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.cyw.office.entity.person.Department" >
+    <id column="DEPT_CODE" property="deptCode" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
+    <result column="DEPT_DESC" property="deptDesc" jdbcType="VARCHAR" />
+    <result column="SUPER_DEPT" property="superDept" jdbcType="VARCHAR" />
+     <result column="state" property="state" jdbcType="VARCHAR" />
+      <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DEPT_CODE, ID, DEPT_NAME, DEPT_DESC, SUPER_DEPT
+  </sql>
+  <select id="getDeptPage" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+  with s as (select t.dept_code ,t.super_dept from t_department t)
+    select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select  distinct td.*,case when s.dept_code is null then 'open' else 'closed' end as state,
+     	 	count(1) over() totalCount
+			from t_department td left join s on td.dept_code = s.super_dept
+			<if test="deptCode!=null">
+				where td.super_dept=#{deptCode }
+			</if>
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+  </select>
+  
+  <select id="findDeptByDeptCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_DEPARTMENT
+    where DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据字段动态插入 -->
+  <insert id="insert" parameterType="java.util.HashMap" >
+    insert into T_DEPARTMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ID,
+      <if test="deptCode != null" >
+        DEPT_CODE,
+      </if>
+      <if test="deptName != null" >
+        DEPT_NAME,
+      </if>
+      <if test="deptDesc != null" >
+        DEPT_DESC,
+      </if>
+      <if test="superDept != null" >
+        SUPER_DEPT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      	seq_t_department_id.nextval,
+      <if test="deptCode != null" >
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptDesc != null" >
+        #{deptDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="superDept != null" >
+        #{superDept,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+    <!--deleteDept  -->
+  <delete id="deleteDeptsByCode" parameterType="java.lang.String" >
+    delete from T_Department
+    where dept_code in 
+    <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+	or super_dept in
+    <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+  </delete>
+  
+  <!-- updateDept -->
+   <parameterMap type="java.util.HashMap" id="updateDeptMap">  
+	    <parameter  property="deptCode" jdbcType="VARCHAR" mode="IN"/>
+	    <parameter property="deptName" jdbcType="VARCHAR" mode="IN"/>
+	    <parameter property="deptDesc" jdbcType="VARCHAR" mode="IN" />
+	    <parameter  property="superDept" jdbcType="VARCHAR" mode="IN" />
+	   <parameter property="error" jdbcType="VARCHAR" mode="OUT"/>  
+	   <parameter property="errorMsg" jdbcType="VARCHAR" mode="OUT"/>  
+ </parameterMap>  
+ <update id="updateDept" parameterMap="updateDeptMap" statementType="CALLABLE">  
+   {call updateDept(?,?,?,?,?, ?)}  
+ </update>  
+
+</mapper>

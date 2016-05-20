@@ -111,4 +111,15 @@
 .icon-auth{
 	background:url('icons/office/auth.png') no-repeat center center;
 }
-
+.icon-person{
+	background:url('icons/office/person.png') no-repeat center center;
+}
+.icon-dept{
+	background:url('icons/office/department.png') no-repeat center center;
+}
+.icon-emp{
+	background:url('icons/office/employee.png') no-repeat center center;
+}
+.icon-posi{
+	background:url('icons/office/position.png') no-repeat center center;
+}
