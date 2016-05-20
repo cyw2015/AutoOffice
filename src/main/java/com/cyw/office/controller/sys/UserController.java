@@ -1,5 +1,6 @@
 package com.cyw.office.controller.sys;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,6 +217,49 @@ public class UserController {
 		}catch(Exception e){
 			obj.put("error",'1');
 			obj.put("errorMsg","删除失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	/**
+	 * 配置用户的角色
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/configRoleSave.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject configRoleSave(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String userCode = request.getParameter("userCode");
+		String roleCode = request.getParameter("roleCodes");
+		String[] roleCodes;
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		if(roleCode!=null&&roleCode.trim().length()!=0){
+			roleCodes= roleCode.split(",");
+			for (int i = 0; i < roleCodes.length; i++) {
+				Map<String, Object> paramsMap = new HashMap<String, Object>();
+				paramsMap.put("userCode", userCode);
+				paramsMap.put("roleCode", roleCodes[i]);
+				paramsMap.put("creater", CommonUtil.getLoginUserName());
+				paramsMap.put("clean", "0");
+				list.add(paramsMap);
+			}
+		}else{
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("userCode", userCode);
+			paramsMap.put("clean", "1");
+			list.add(paramsMap);
+		}
+		
+		try {
+			userService.configRoleSave(list);
+			obj.put("error", '0');
+		} catch (Exception e) {
+			obj.put("error", '1');
+			obj.put("errorMsg", "配置权限失败");
 			e.printStackTrace();
 		}
 		return obj;

@@ -485,7 +485,103 @@ $(document).ready(function() {
 			}else {
 				$.messager.alert('提示', '请选择要删除的记录!', 'info');
 			}
+		},
+		config:function(){
+			var rows = $('#userTable').datagrid('getSelections');
+			if (rows.length > 1) {
+				$.messager.alert("警告操作!", "只能选择一条数据！", 'warning');
+			} else if (rows.length == 1) {
+				var checkRows = [];
+				$('#roleList').datalist({
+			        url: 'sys/getConfigRole.do',
+			        checkbox: true,
+			        lines: true,
+			        fit:true,
+			        queryParams:{
+			        	userCode:rows[0].user_code
+			        },
+			        valueField:'roleCode',
+			        textField:'roleName',
+					selectOnCheck: false,
+					onBeforeSelect: function(){
+						return false;
+					},
+					textFormatter:function(value,row,index){
+						if(row.check){
+							checkRows.push(index);
+						}
+						return '('+row.roleCode+')'+row.roleName;
+					},
+					onLoadSuccess:function(){
+						 for(var i = 0;i<checkRows.length;i++){
+			    			$('#roleList').datalist('checkRow',checkRows[i]);
+			    		}
+					}
+			    });
+			   
+				//配置角色
+				$('#roleConfig').show().dialog({
+				    title: '配置角色',
+				    width: '20%',
+				    height: '40%',
+				    closed: true,
+				    cache: false,
+				    modal: true,
+				    border:'thin',cls:'c6',
+				    buttons : [ {
+						text : '提交',
+						iconCls : 'icon-save',
+						handler :funConfigRole
+					}, {
+						text : '取消',
+						iconCls : 'icon-redo',
+						handler : function() {
+							$('#roleConfig').dialog('close');
+						}
+					} ]
+				});
+				$('#roleConfig').dialog('open');
+			} else if (rows.length == 0) {
+				$.messager.alert("警告操作!", "至少选择一条", 'warning');
+			}
+		
 		}
 	}
 });
 
+//配置角色提交
+function funConfigRole(){
+	var userCode = $('#userTable').datagrid('getSelections')[0].user_code;
+	var rows = $('#roleList').datalist('getChecked');
+	var roleCodes = [];
+	for(var i = 0;i<rows.length;i++){
+		roleCodes.push(rows[i].roleCode);
+	}
+	$.ajax({
+		url:'sys/configRoleSave.do',
+		type : 'post',
+		cache : false,
+		data : {
+			userCode:userCode,
+			roleCodes:roleCodes.join(',')
+		},
+		beforeSend : function() {
+			$.messager.progress({
+				text : '正在赋予角色中...'
+			});
+		},
+		success : function(data, response, status) {
+			$.messager.progress('close');
+			if (data.error!='1') {
+				$.messager.show({
+					title : '提示',
+					msg : '赋予角色成功'
+				});
+				$('#roleConfig').dialog('close');
+				$('#userTable').datagrid('reload');
+			} else {
+				$.messager.alert("赋予角色失败!", data.errorMsg!=undefined&&data.errorMsg!=null?data.errorMsg:"未知错误原因", 'warning');
+			}
+		}
+	})
+}

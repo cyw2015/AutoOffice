@@ -64,4 +64,27 @@
     </foreach>
   </delete>
   
+  <!-- 删除角色权限表  -->
+   <delete id="deleteRoleAuthByRoleCode" parameterType="java.lang.String" >
+    delete from t_roles_authorities
+    where role_code =#{roleCode}
+  </delete>
+  <!-- 配置角色权限 -->
+  <!-- configAuth -->
+  <insert id="configAuth" parameterType="java.util.List" >
+  	insert into t_roles_authorities (id, role_code, authority_code, creater, createdate, remark)
+  	 select seq_t_role_auth_id.nextval ,A.* from(
+    <foreach collection="list" item="item" index="index" separator="union all " >
+       (select #{item.roleCode},#{item.authCode},#{item.creater},sysdate,null from dual)
+    </foreach>
+    )A
+  </insert>
+  
+  <!-- 获取角色配置信息 -->
+  <select id="getConfigRole"  resultType="com.cyw.office.entity.sys.Role" parameterType="java.lang.String" >
+	    select tr.role_code as roleCode ,tr.role_name as roleName,
+		case when tur.user_code is null then 'uncheck' else 'check' end as remark
+		from t_roles tr
+		left join t_users_roles tur  on tr.role_code = tur.role_code and tur.user_code=#{userCode}
+	</select>
 </mapper>

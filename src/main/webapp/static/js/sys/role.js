@@ -171,6 +171,7 @@ $(document).ready(function() {
 		} ]
 	});
 	
+	
 	//表格工具栏菜单
 	roleTable_tool={
 		add: function() {
@@ -229,6 +230,66 @@ $(document).ready(function() {
 			}else {
 				$.messager.alert('提示', '请选择要删除的记录!', 'info');
 			}
+		},
+		config:function(){
+			var rows = $('#roleTable').datagrid('getSelections');
+			if (rows.length > 1) {
+				$.messager.alert("警告操作!", "只能选择一条数据！", 'warning');
+			} else if (rows.length == 1) {
+				var checkRows = [];
+				$('#authList').datalist({
+			        url: 'sys/getAllAuth.do',
+			        checkbox: true,
+			        lines: true,
+			        queryParams:{
+			        	roleCode:rows[0].role_code
+			        },
+			        fit:true,
+			        valueField:'authCode',
+			        textField:'authName',
+					selectOnCheck: false,
+					onBeforeSelect: function(){
+						return false;
+					},
+					textFormatter:function(value,row,index){
+						if(row.check){
+							checkRows.push(index);
+						}
+						return '('+row.authCode+')'+row.authName;
+					},
+					onLoadSuccess:function(){
+						 for(var i = 0;i<checkRows.length;i++){
+			    			$('#authList').datalist('checkRow',checkRows[i]);
+			    		}
+					}
+			    });
+			   
+				//配置权限
+				$('#authConfig').show().dialog({
+				    title: '配置权限',
+				    width: '20%',
+				    height: '40%',
+				    closed: true,
+				    cache: false,
+				    modal: true,
+				    border:'thin',cls:'c6',
+				    buttons : [ {
+						text : '提交',
+						iconCls : 'icon-save',
+						handler :funConfigAuth
+					}, {
+						text : '取消',
+						iconCls : 'icon-redo',
+						handler : function() {
+							$('#authConfig').dialog('close');
+						}
+					} ]
+				});
+				$('#authConfig').dialog('open');
+			} else if (rows.length == 0) {
+				$.messager.alert("警告操作!", "至少选择一条", 'warning');
+			}
+		
 		}
 	}
 })
@@ -298,4 +359,41 @@ function funUpdateRole(){
 			}
 		})
 	}	
+}
+
+//配置权限提交
+function funConfigAuth(){
+	var roleCode = $('#roleTable').datagrid('getSelections')[0].role_code;
+	var rows = $('#authList').datalist('getChecked');
+	var authCodes = [];
+	for(var i = 0;i<rows.length;i++){
+		authCodes.push(rows[i].authCode);
+	}
+	$.ajax({
+		url:'sys/configAuth.do',
+		type : 'post',
+		cache : false,
+		data : {
+			roleCode:roleCode,
+			authCodes:authCodes.join(',')
+		},
+		beforeSend : function() {
+			$.messager.progress({
+				text : '正在配置中...'
+			});
+		},
+		success : function(data, response, status) {
+			$.messager.progress('close');
+			if (data.error!='1') {
+				$.messager.show({
+					title : '提示',
+					msg : '配置权限成功'
+				});
+				$('#authConfig').dialog('close');
+				$('#roleTable').datagrid('reload');
+			} else {
+				$.messager.alert("配置权限失败!", data.errorMsg!=undefined&&data.errorMsg!=null?data.errorMsg:"未知错误原因", 'warning');
+			}
+		}
+	})
 }

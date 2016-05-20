@@ -17,5 +17,11 @@ public interface RoleMapper {
 	int updateByRoleCode(Map<String, Object> paramsMap);
 
 	int deleteRolesByIds(String[] roleCodes);
+
+	int deleteRoleAuthByRoleCode(String string);
+
+	int configAuth(List<Map<String, Object>> list);
+
+	List<Role> getConfigRole(String userCode);
 	
 }

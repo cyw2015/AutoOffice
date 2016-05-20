@@ -17,4 +17,6 @@ public interface IUserService {
 	public int resetPassword(Map<String, Object> paramsMap);
 
 	public int deleteUsers(String[] userCodes);
+
+	public int configRoleSave(List<Map<String, Object>> list);
 }

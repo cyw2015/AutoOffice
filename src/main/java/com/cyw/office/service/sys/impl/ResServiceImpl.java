@@ -23,12 +23,17 @@ public class ResServiceImpl implements IResService {
 		return this.resourceMapper.findAllRes();
 	}
 
-	public List<Resource> findResTree(String id) {
-		return this.resourceMapper.findResTree(id);
+	public List<Resource> findResTree(Map<String, Object> paramsMap) {
+		return this.resourceMapper.findResTree(paramsMap);
 	}
 
 	public List<Resource> getResPage(Map<String, Object> paramsMap) {
 		return this.resourceMapper.getResPage(paramsMap);
+	}
+
+	@Override
+	public List<Resource> getAllResTree(Map<String, Object> paramsMap) {
+		return this.resourceMapper.getAllResTree(paramsMap);
 	}
 
 }

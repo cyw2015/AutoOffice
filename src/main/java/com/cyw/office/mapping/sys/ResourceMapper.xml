@@ -17,7 +17,7 @@
 	</resultMap>
 	<select id="findResByUserCode" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		select re.*
+		select  distinct re.*
 		from t_users u
 		 join t_users_roles tur on u.user_code=tur.user_code
 		 join t_roles r on tur.role_code = r.role_code
@@ -31,8 +31,14 @@
 		select * from t_resources
 	</select>
 	
-	<select id="findResTree" resultMap="BaseResultMap">
-		select * from t_resources  r where  r.parent=#{id}
+	<select id="findResTree"   parameterType="java.util.HashMap"  resultMap="BaseResultMap">
+		  select distinct trs.* from t_users_roles tur
+		     join t_roles tr on tur.role_code=tr.role_code
+		     join t_roles_authorities tra on tr.role_code=tra.role_code
+		     join t_authorities ta on tra.authority_code = ta.authority_code
+		     join t_authorities_resources tar on ta.authority_code = tar.authority_code
+		     join t_resources trs on tar.resource_code = trs.resource_code
+		    where tur.user_code=#{user } and trs.parent=#{id}
 	</select>
 	
 	<select id="getResPage" parameterType="java.util.HashMap"  resultType="com.cyw.office.entity.sys.Resource" >
@@ -50,5 +56,16 @@
 		) t
 		where t.rowIndex > #{start }
 			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	</select>
+	
+	<!-- 获取配置资源 -->
+	<select id="getAllResTree" parameterType="java.util.HashMap"  resultType="com.cyw.office.entity.sys.Resource">
+		select r.id,r.resource_code as resourceCode,
+		r.resource_name as resourceName,r.type,r.iconcls ,r.parent ,
+		a.remark 
+		from t_resources r left  
+		join t_authorities_resources a 
+		on r.resource_code=a.resource_code  and  a.authority_code=#{authCode}
+		where  r.parent=#{id} 
 	</select>
 </mapper>

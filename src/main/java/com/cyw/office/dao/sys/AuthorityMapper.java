@@ -18,4 +18,10 @@ public interface AuthorityMapper {
 
 	int deleteAuthsByIds(String[] authCodes);
 
+	int configRes(List<Map<String, Object>> list);
+
+	int  deleteAuthResByAuthCode(String authCode);
+
+	List<Authority> getAllAuthWithRole(String roleCode);
+
 }

@@ -18,4 +18,8 @@ public interface UserMapper {
 	int resetPassword(Map<String, Object> paramsMap);
 
 	int deleteUsers(String[] userCodes);
+
+	int deleteUserRoleByUserCode(String string);
+
+	int configRoleSave(List<Map<String, Object>> list);
 }

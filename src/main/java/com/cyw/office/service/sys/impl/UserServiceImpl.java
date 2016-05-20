@@ -46,4 +46,17 @@ public class UserServiceImpl implements IUserService {
 		return this.userMapper.deleteUsers(userCodes);
 	}
 
+	/**
+	 * 配置用户角色
+	 */
+	@Override
+	public int configRoleSave(List<Map<String, Object>> list) {
+		//先删除然后批量插入
+		int i=this.userMapper.deleteUserRoleByUserCode(list.get(0).get("userCode").toString());
+		if(list.get(0).get("clean").toString().equals("0")){
+			return this.userMapper.configRoleSave(list);
+		}
+		return i;
+	}
+
 }

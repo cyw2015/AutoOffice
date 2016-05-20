@@ -1,5 +1,6 @@
 package com.cyw.office.controller.sys;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,5 +189,75 @@ public class AuthController {
 			e.printStackTrace();
 		}
 		return obj;
+	}
+	
+	/**
+	 * 配置资源信息
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/configRes.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject configRes(HttpServletRequest request,HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		String authCode = request.getParameter("authCode");
+		String resCode = request.getParameter("resCodes");
+		String checkState = request.getParameter("checkStates");
+		String[] resCodes;
+		String[] checkStates;
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		if(resCode!=null&&resCode.trim().length()!=0){
+			resCodes = resCode.split(","); 
+			checkStates =checkState.split(",");
+			for(int i = 0 ;i< resCodes.length;i++){
+				Map<String, Object> paramsMap = new HashMap<String, Object>();
+				paramsMap.put("authCode", authCode);
+				paramsMap.put("resCode",resCodes[i]);
+				paramsMap.put("remark", checkStates[i]);
+				paramsMap.put("creater",CommonUtil.getLoginUserName());
+				paramsMap.put("clean", "0");
+				list.add(paramsMap);
+			}
+		}else{
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("authCode", authCode);
+			paramsMap.put("clean", "1");
+			list.add(paramsMap);
+		}
+		
+		try{
+			authService.configRes(list);
+			obj.put("error",'0');
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","配置资源失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value = "/getAllAuth.do")
+	@ResponseBody
+	public JSONArray getAllAuth(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONArray arr = new JSONArray();
+		String roleCode = request.getParameter("roleCode");
+		List<Authority> authList = null;
+		try {
+			authList = authService.getAllAuthWithRole(roleCode);
+			if(authList!=null&&authList.size()>0){
+				for(Authority auth :authList){
+					JSONObject obj = new JSONObject();
+					obj.put("authCode", auth.getAuthorityCode());
+					obj.put("authName", auth.getAuthorityName());
+					obj.put("check", auth.getRemark()!=null&&auth.getRemark().equals("check")?true:false);
+					arr.add(obj);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
 	}
 }

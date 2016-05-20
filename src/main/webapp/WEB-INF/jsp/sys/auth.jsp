@@ -11,6 +11,7 @@
    		<div style="margin-bottom:5px">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="authTable_tool.add();">增加权限</a>
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="authTable_tool.edit();">修改权限</a>
+   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="authTable_tool.config();">配置资源</a>
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="authTable_tool.remove();">删除权限</a>
    		</div>
    	</div>
@@ -49,6 +50,9 @@
 			</tr>
 		</table>
 	</form>
+	<div id="win" style="display:none">
+		<ul id="tt"></ul>
+	</div>
 	<script type="text/javascript" src="${staticPath }/static/js/sys/auth.js"></script>
 </body>
 </html>

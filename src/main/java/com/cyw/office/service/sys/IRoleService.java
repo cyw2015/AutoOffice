@@ -17,4 +17,8 @@ public interface IRoleService {
 
 	int deleteRolesByIds(String[] roleCodes);
 
+	int configAuth(List<Map<String, Object>> list);
+
+	List<Role> getConfigRole(String userCode);
+
 }

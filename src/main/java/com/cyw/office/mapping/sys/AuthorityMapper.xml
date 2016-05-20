@@ -63,4 +63,29 @@
     	#{item}
     </foreach>
   </delete>
+  
+  <!-- 通过AuthCode删除权限资源表 -->
+  <delete id="deleteAuthResByAuthCode" parameterType="java.lang.String" >
+    delete from t_authorities_resources
+ 	where AUTHORITY_CODE =#{authCode}
+  </delete>
+  <!-- configRes -->
+  <insert id="configRes" parameterType="java.util.List" >
+  	 INSERT INTO t_authorities_resources (id, authority_code, resource_code, creater, createdate, remark)
+  	 select seq_t_auth_res_id.nextval ,A.* from(
+    <foreach collection="list" item="item" index="index" separator="union all " >
+       (select #{item.authCode},#{item.resCode},#{item.creater},sysdate,#{item.remark} from dual)
+    </foreach>
+    )A
+  </insert>
+  
+	<!-- 获取权限 -->
+  <select id="getAllAuthWithRole"  resultType="com.cyw.office.entity.sys.Authority" parameterType="java.lang.String" >
+	    select  ta.authority_code as authorityCode ,
+		ta.authority_name as authorityName,
+		case when tr.role_code is null then 'uncheck' else 'check' end as remark
+		from  t_authorities  ta 
+		left join t_roles_authorities tr 
+		on ta.authority_code = tr.authority_code and tr.role_code=#{roleCode}
+	</select>
 </mapper>

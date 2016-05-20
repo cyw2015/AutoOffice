@@ -35,4 +35,25 @@ public class RoleServiceImpl implements IRoleService {
 		return this.roleMapper.deleteRolesByIds(roleCodes);
 	}
 
+	/**
+	 * 配置权限
+	 */
+	@Override
+	public int configAuth(List<Map<String, Object>> list) {
+		//先删除然后批量插入
+		int i=this.roleMapper.deleteRoleAuthByRoleCode(list.get(0).get("roleCode").toString());
+		if(list.get(0).get("clean").toString().equals("0")){
+			return this.roleMapper.configAuth(list);
+		}
+		return i;
+	}
+
+	/**
+	 * 获取配置角色信息
+	 */
+	@Override
+	public List<Role> getConfigRole(String userCode) {
+		return this.roleMapper.getConfigRole(userCode);
+	}
+
 }

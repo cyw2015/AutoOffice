@@ -41,29 +41,31 @@ public class MyInvocationSecurityMetadataSourceService implements
 	// tomcat开启时加载一次，加载所有url和权限（或角色）的对应关系
 	// 我直接处理资源编码和url关系
 	private void loadResourceDefine() {
-		List<Resource> query = resService.findAllRes();
-		System.out.println("size="+query.size());
+		List<Resource> query = resService.findAllRes();//获得所有资源
+		System.out.println("size=" + query.size());
 		resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
 		Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
-		ConfigAttribute cab = new SecurityConfig("RES_SYS_MAIN");
+		ConfigAttribute cab = new SecurityConfig("ROLE_MAIN");// 首页权限
 		atts.add(cab);
 		resourceMap.put("/index.jsp", atts);
 		resourceMap.put("/**", atts);
 		for (Resource auth : query) {
+			Collection<ConfigAttribute> atts1 = new ArrayList<ConfigAttribute>();
 			ConfigAttribute ca = new SecurityConfig(auth.getResourceCode());// "ROLE_ADMIN"
-			String url = auth.getUrl();
-			if(url!=null)
-			// 判断资源文件和权限的对应关系，如果已经存在，要进行增加
-			if (resourceMap.containsKey(url)) {
-				Collection<ConfigAttribute> value = resourceMap.get(url);
-				value.add(ca);
-				resourceMap.put(url, value);
-			} else {
-				atts.add(ca);
-				resourceMap.put(url, atts);
+			String url = auth.getUrl() + ".do*";
+			if (url != null) {
+				// 判断资源文件和权限的对应关系，如果已经存在，要进行增加
+				if (resourceMap.containsKey(url)) {
+					Collection<ConfigAttribute> value = resourceMap.get(url);
+					value.add(ca);
+					resourceMap.put(url, value);
+				} else {
+					atts1.add(ca);
+					resourceMap.put(url, atts1);
+				}
 			}
-			resourceMap.put(url, atts);
-			 }
+//			resourceMap.put(url, atts);
+		}
 	}
 
 	// 参数是要访问的url，返回这个url对于的所有权限（或角色）
@@ -76,6 +78,7 @@ public class MyInvocationSecurityMetadataSourceService implements
 			String resURL = ite.next();
 			if(resURL!=null)
 			if (urlMatcher.pathMatchesUrl(resURL, url)) {
+				System.out.println("====================" +resourceMap.get(resURL));
 				return resourceMap.get(resURL);
 			}
 		}

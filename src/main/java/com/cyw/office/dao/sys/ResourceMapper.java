@@ -11,8 +11,10 @@ public interface ResourceMapper {
 
 	List<Resource> findAllRes();
 
-	List<Resource> findResTree(String id);
+	List<Resource> findResTree(Map<String, Object> paramsMap);
 
 	List<Resource> getResPage(Map<String, Object> paramsMap);
+
+	List<Resource> getAllResTree(Map<String, Object> paramsMap);
    
 }

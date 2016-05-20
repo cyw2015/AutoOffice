@@ -1,5 +1,6 @@
 package com.cyw.office.controller.sys;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,5 +190,78 @@ public class RoleController {
 			e.printStackTrace();
 		}
 		return obj;
+	}
+	
+	/**
+	 * 配置角色的权限
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/configAuth.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject configAuth(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String roleCode = request.getParameter("roleCode");
+		String authCode = request.getParameter("authCodes");
+		String[] authCodes;
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		if(authCode!=null&&authCode.trim().length()!=0){
+			authCodes= authCode.split(",");
+			for (int i = 0; i < authCodes.length; i++) {
+				Map<String, Object> paramsMap = new HashMap<String, Object>();
+				paramsMap.put("roleCode", roleCode);
+				paramsMap.put("authCode", authCodes[i]);
+				paramsMap.put("creater", CommonUtil.getLoginUserName());
+				paramsMap.put("clean", "0");
+				list.add(paramsMap);
+			}
+		}else{
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("roleCode", roleCode);
+			paramsMap.put("clean", "1");
+			list.add(paramsMap);
+		}
+		
+		try {
+			roleService.configAuth(list);
+			obj.put("error", '0');
+		} catch (Exception e) {
+			obj.put("error", '1');
+			obj.put("errorMsg", "配置权限失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	/**
+	 * 获取配置角色信息
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getConfigRole.do")
+	@ResponseBody
+	public JSONArray getConfigRole(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONArray arr = new JSONArray();
+		String userCode = request.getParameter("userCode");
+		List<Role> roleList = null;
+		try {
+			roleList = roleService.getConfigRole(userCode);
+			if(roleList!=null&&roleList.size()>0){
+				for(Role role :roleList){
+					JSONObject obj = new JSONObject();
+					obj.put("roleCode", role.getRoleCode());
+					obj.put("roleName", role.getRoleName());
+					obj.put("check", role.getRemark()!=null&&role.getRemark().equals("check")?true:false);
+					arr.add(obj);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
 	}
 }

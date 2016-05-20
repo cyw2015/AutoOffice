@@ -11,6 +11,7 @@
    		<div style="margin-bottom:5px">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="roleTable_tool.add();">增加角色</a>
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="roleTable_tool.edit();">修改角色</a>
+   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="roleTable_tool.config();">配置权限</a>
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="roleTable_tool.remove();">删除角色</a>
    		</div>
    	</div>
@@ -50,6 +51,10 @@
 		</tr>
 	</table>
 	</form>
+	
+	<div id="authConfig" style="display:none">
+		<div id="authList"></div>
+	</div>
 	<script type="text/javascript" src="${staticPath }/static/js/sys/role.js"></script>
 </body>
 </html>

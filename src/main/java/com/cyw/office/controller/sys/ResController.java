@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cyw.office.entity.sys.Resource;
 import com.cyw.office.service.sys.IResService;
+import com.cyw.office.util.CommonUtil;
 import com.cyw.office.util.PageBean;
 
 @Controller
@@ -27,6 +28,12 @@ public class ResController {
 	@Autowired
 	private IResService resService;
 
+	/**
+	 * 获取侧边导航栏
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = "/ResTree.do", method = RequestMethod.POST)
 	@ResponseBody
 	public JSONArray resTree(HttpServletRequest request,
@@ -36,10 +43,12 @@ public class ResController {
 			id = "0";
 		}
 		List<Resource> resList= null;
-//		JSONObject obj = new JSONObject();
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("user",CommonUtil.getLoginUserName());
+		paramsMap.put("id", id);
 		JSONArray arr = new JSONArray();
 		try {
-		resList = resService.findResTree(id);
+		resList = resService.findResTree(paramsMap);
 		if(resList!=null&&resList.size()!=0){
 			for(Resource res:resList){
 				JSONObject objInfo = new JSONObject();
@@ -113,5 +122,42 @@ public class ResController {
 		}
 		
 		return obj;
+	}
+	
+	//获得所有资源
+	@RequestMapping(value = "/getAllResTree.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONArray getAllResTree(HttpServletRequest request,
+			HttpServletResponse response) {
+		String id = request.getParameter("id");
+		String authCode=request.getParameter("authCode");
+		if (id == null) {
+			id = "0";
+		}
+		Map<String,Object> paramsMap = new HashMap<String,Object>();
+		paramsMap.put("id", id);
+		paramsMap.put("authCode", authCode);
+		List<Resource> resList= null;
+		JSONArray arr = new JSONArray();
+		try {
+		resList = resService.getAllResTree(paramsMap);
+		if(resList!=null&&resList.size()!=0){
+			for(Resource res:resList){
+				JSONObject objInfo = new JSONObject();
+				objInfo.put("id", res.getId());
+				objInfo.put("text", res.getResourceName());
+				objInfo.put("code", res.getResourceCode());
+				objInfo.put("state", res.getType().equals("1")?"closed":"open");
+				objInfo.put("checked", res.getRemark()!=null&&res.getRemark().equals("checked")?true:false);
+				objInfo.put("iconCls", res.getIconcls());
+				objInfo.put("nid", res.getParent());
+				arr.add(objInfo);
+			}
+		}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
 	}
 }

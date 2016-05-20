@@ -46,15 +46,17 @@ public class MyUserDetailService implements UserDetailsService {
 		// 取得用户权限
 		List<Resource> ress = resService.findResByUserCode(usercode);
 	     System.out.println("size="+ress.size());
-		 if (null == ress || ress.isEmpty())  
-	            throw new UsernameNotFoundException("权限不足!");  
-		// 把权限赋值给当前对象  
-		 else{
-			 for(Resource res : ress){
-				 System.out.println(res.getResourceCode()+"|"+res.getResourceName());
-				 auths.add(new SimpleGrantedAuthority(res.getResourceCode()));
-			 }
+//		 if (null == ress || ress.isEmpty())  
+//	            throw new UsernameNotFoundException("权限不足!");  
+//		// 把权限赋值给当前对象  
+//		 else{
+//			
+//		 }
+	     for(Resource res : ress){
+			 System.out.println(res.getResourceCode()+"|"+res.getResourceName());
+			 auths.add(new SimpleGrantedAuthority(res.getResourceCode()));
 		 }
+	     auths.add(new SimpleGrantedAuthority("ROLE_MAIN"));//首页权限
 		org.springframework.security.core.userdetails.User userDetail= new org.springframework.security.core.userdetails.User(usercode, user.getUserPassword(), user.getEnabled()==1?true:false, true, true, true, auths);
 		return userDetail;
 	}

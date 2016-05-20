@@ -55,4 +55,26 @@ public class AuthServiceImpl implements IAuthService {
 		return this.authMapper.deleteAuthsByIds(authCodes);
 	}
 
+	/**
+	 * 配置资源
+	 */
+	@Override
+	public int configRes(List<Map<String, Object>> list) {
+		//先删除然后批量插入
+		int i = this.authMapper.deleteAuthResByAuthCode(list.get(0).get("authCode").toString());
+		if(list.get(0).get("clean").toString().equals("0")){
+			//不为空则插入
+			return this.authMapper.configRes(list);
+		}
+		return i;
+	}
+
+	/**
+	 * 获取所有权限列表
+	 */
+	@Override
+	public List<Authority> getAllAuthWithRole(String roleCode) {
+		return this.authMapper.getAllAuthWithRole(roleCode);
+	}
+
 }

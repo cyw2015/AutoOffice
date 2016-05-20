@@ -17,4 +17,8 @@ public interface IAuthService {
 
 	int deleteAuthsByIds(String[] authCodes);
 
+	int configRes(List<Map<String, Object>> list);
+
+	List<Authority> getAllAuthWithRole(String roleCode);
+
 }

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var cmenu;
 	$('#resTable').datagrid({
 		url : 'sys/getResPage.do',
 		fit : true,
@@ -11,18 +12,26 @@ $(document).ready(function() {
 		pageList : [ 10, 20, 30, 40, 50 ],
 		pageNumber : 1,
 		toolbar : '#resTable_tool',
-		sortName : 'resourceCode',
-		sortOrder : 'desc',
+		sortName : 'id',
+		sortOrder : 'asc',
 		columns : [ [ {
-			field : 'id',
+			field : '_id',
 			title : '自动编号',
 			width : 100,
-			checkbox : true
+			checkbox : true,
+			formatter:function(value,row,index){
+				return row.id;
+			}
+		},{
+			field : 'id',
+			title : '编号',
+			sortable:true,
+			width : 50
 		},{
 			field : 'resourceCode',
 			title : '资源编码',
 			sortable:true,
-			width : 100
+			width : 120
 		}, {
 			field : 'resourceName',
 			title : '资源名称',
@@ -63,34 +72,48 @@ $(document).ready(function() {
 			field : 'remark',
 			title : '备注',
 			width : 100
-		}]]
+		}]],
+		onHeaderContextMenu: function(e, field){
+			e.preventDefault();
+			if (!cmenu){
+				createColumnMenu();
+			}
+			cmenu.menu('show', {
+				left:e.pageX,
+				top:e.pageY
+			});
+		}
 	});
-	resTable_tool ={
-		add: function() {
-			$('#resRow_add').dialog('open').form('reset');
-//			$('input[name="username_add"]').focus();
+	
+	//表头菜单
+	function createColumnMenu(){
+		cmenu = $('<div/>').appendTo('body');
+		cmenu.menu({ 
+			onClick: function(item){
+				if (item.iconCls == 'icon-ok'){
+					$('#resTable').datagrid('hideColumn', item.name);
+					cmenu.menu('setIcon', {
+						target: item.target,
+						iconCls: 'icon-empty'
+					});
+				} else {
+					$('#resTable').datagrid('showColumn', item.name);
+						cmenu.menu('setIcon', {
+							target: item.target,
+							iconCls: 'icon-ok'
+						});
+				}
+			}
+		});
+		var fields = $('#resTable').datagrid('getColumnFields');
+		for(var i=0; i<fields.length; i++){
+			var field = fields[i];
+			var col = $('#resTable').datagrid('getColumnOption', field);
+				cmenu.menu('appendItem', {
+					text: col.title,
+					name: field,
+					iconCls: 'icon-ok'
+				});
 		}
 	}
-	
-	$('#resRow_add').show().dialog({
-	    title: '添加资源',
-	    width: 400,
-	    height: 200,
-	    closed: true,
-	    cache: false,
-	    modal: true,
-	    border:'thin',cls:'c6',
-	    buttons : [ {
-			text : '提交',
-			iconCls : 'icon-save',
-			handler : function(){
-			}
-		}, {
-			text : '取消',
-			iconCls : 'icon-redo',
-			handler : function() {
-				$('#resRow_add').dialog('close').form('reset');
-			}
-		} ]
-	});
 });

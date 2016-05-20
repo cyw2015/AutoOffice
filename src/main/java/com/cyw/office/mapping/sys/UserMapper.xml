@@ -79,4 +79,19 @@
     where user_code in <foreach collection="array" item="item" index="index" 
 open="(" separator="," close=")">#{item}</foreach>
   </delete>
+  
+  <!-- 删除用户角色表  -->
+   <delete id="deleteUserRoleByUserCode" parameterType="java.lang.String" >
+    delete from t_users_roles 
+    where user_code =#{userCode}
+  </delete>
+  
+  <insert id="configRoleSave" parameterType="java.util.List" >
+  	insert into t_users_roles (id, user_code, role_code, creater, createdate, remark)
+  	 select seq_t_user_role_id.nextval ,A.* from(
+    <foreach collection="list" item="item" index="index" separator="union all " >
+       (select #{item.userCode},#{item.roleCode},#{item.creater},sysdate,null from dual)
+    </foreach>
+    )A
+  </insert>
 </mapper>
