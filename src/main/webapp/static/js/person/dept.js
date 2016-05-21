@@ -202,7 +202,8 @@ function initAdd(){
 	})
 	$("#deptTable_add_dept_desc").textbox({
 	  	width:400,
-	 	height:60
+	 	height:60,
+	 	multiline:true
 	})
 	$('#deptTable_add_super_dept').combotree({
 		width:400,
@@ -278,7 +279,8 @@ function initEdit(){
 	})
 	$("#deptTable_edit_dept_desc").textbox({
 	  	width:400,
-	 	height:60
+	 	height:60,
+		multiline:true
 	})
 	$('#deptTable_edit_super_dept').combotree({
 		width:400,

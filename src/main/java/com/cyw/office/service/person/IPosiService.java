@@ -42,4 +42,10 @@ public interface IPosiService {
 	 */
 	int deletePosiById(String[] ids);
 
+	/**
+	 * 获取岗位信息
+	 * @return
+	 */
+	List<Position> getComboPosi();
+
 }

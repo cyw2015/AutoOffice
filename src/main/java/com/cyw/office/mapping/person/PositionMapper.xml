@@ -6,6 +6,7 @@
     <result column="POSI_NAME" property="posiName" jdbcType="VARCHAR" />
     <result column="POSI_DESC" property="posiDesc" jdbcType="VARCHAR" />
     <result column="POSI_LEVEL" property="posiLevel" jdbcType="DECIMAL" />
+     <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     ID, POSI_NAME, POSI_DESC, POSI_LEVEL
@@ -31,6 +32,12 @@
     <include refid="Base_Column_List" />
     from t_position
     where posi_name = #{posiName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getComboPosi" resultType="com.cyw.office.entity.person.Position">
+    select 
+   	id,posi_name as posiName
+    from t_position order by  posi_level asc
   </select>
   
   <insert id="insert" parameterType="java.util.HashMap" >

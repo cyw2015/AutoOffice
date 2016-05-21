@@ -203,4 +203,33 @@ public class PosiController {
 		}
 		return obj;
 	}
+	
+	/**
+	 * 获取岗位信息
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getComboPosi.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONArray getComboPosi(HttpServletRequest request,
+			HttpServletResponse response) {
+		List<Position> posiList = null;
+		JSONArray arr = new JSONArray();
+		try {
+			posiList = posiService.getComboPosi();
+			if (posiList != null && posiList.size() != 0) {
+				for (Position posi : posiList) {
+					JSONObject objInfo = new JSONObject();
+					objInfo.put("id", posi.getId());
+					objInfo.put("posi_name", posi.getPosiName());
+					arr.add(objInfo);
+				}
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return arr;
+	}
 }

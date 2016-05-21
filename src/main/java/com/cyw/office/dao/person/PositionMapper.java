@@ -42,4 +42,10 @@ public interface PositionMapper {
 	 * @return
 	 */
 	int deletePosiById(String[] ids);
+
+	/**
+	 * 获取岗位信息 
+	 * @return
+	 */
+	List<Position> getComboPosi();
 }

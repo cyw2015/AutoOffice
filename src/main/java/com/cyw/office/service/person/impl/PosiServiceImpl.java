@@ -35,5 +35,9 @@ public class PosiServiceImpl implements IPosiService {
 	public int deletePosiById(String[] ids) {
 		return this.posiMapper.deletePosiById(ids);
 	}
+	@Override
+	public List<Position> getComboPosi() {
+		return this.posiMapper.getComboPosi();
+	}
 
 }
