@@ -19,7 +19,7 @@ $(document).ready(function() {
 		},
 		columns : [ [ {
 			field : 'id',
-			title : '',
+			title : '编号',
 			checkbox : true,
 			width : 100
 		}, {
