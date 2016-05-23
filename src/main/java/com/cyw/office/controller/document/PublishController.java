@@ -354,4 +354,36 @@ public class PublishController {
 		}
 		return obj;
 	}
+	
+	/**
+	 * 送审
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/sendAppr.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject sendAppr(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String docCode = request.getParameter("docCode");
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("docCode",docCode);
+		paramsMap.put("creater",CommonUtil.getLoginUserName());
+		try{
+			int i = pubService.sendAppr(paramsMap);
+			if(i!=0){
+				obj.put("error", "0");
+				obj.put("errorMsg", "文件上传失败");
+			}else{
+				obj.put("error", "1");
+				obj.put("errorMsg", "文件上传失败");
+			}
+		}catch (Exception e){
+			obj.put("error", "1");
+			obj.put("errorMsg", "文件上传失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }

@@ -58,11 +58,16 @@ $(document).ready(function() {
 			field : 'state',
 			title : '状态',
 			width : 100,
+			sortable:true,
 			formatter:function(value,row,index){
 				if(value=='0'){
 					return "未送审";
-				}else {
-					return "否";
+				}else if(value=='1'){
+					return "待审批";
+				}else if(value=='2'){
+					return "审批通过";
+				}else if(value=='-1'){
+					return "审批未通过";
 				}
 			}
 		}]],
@@ -191,6 +196,70 @@ $(document).ready(function() {
 					$('#docPubTable_edit').dialog('open');	
 				}else{
 					$.messager.alert("警告操作!", "只能编辑未送审公文", 'warning');
+				}
+			}
+		},
+		approval:function(){
+			var rows = $('#docPubTable').datagrid('getSelections');
+			if (rows.length > 1) {
+				$.messager.alert("警告操作!", "一次只能送审一条公文!", 'warning');
+			} else if (rows.length == 0) {
+				$.messager.alert("警告操作!", "请先选择一条公文数据!", 'warning');
+			}else{
+				if(rows[0].state!='0'){
+					$.messager.alert("警告操作!", "只能处理未送审公文", 'warning');
+				}else{
+					$.messager.confirm('提示！', '确定要送审公文:<b style="color:blue">'+rows[0].doc_title+'</b>吗？', function(flag) {
+						if (flag) {
+							$.ajax({
+								type : 'POST',
+								url : 'document/sendAppr.do',
+								data : {
+									docCode:rows[0].doc_code
+								},
+								beforeSend : function() {
+									$('#docPubTable').datagrid('loading');
+								},
+								success : function(data) {
+									if (data.error!="1") {
+										$('#docPubTable').datagrid('loaded');
+										$('#docPubTable').datagrid('load');
+										$('#docPubTable').datagrid('unselectAll');
+										$.messager.show({
+											title : '提示',
+											msg :'送审成功,请等待审批人员审批'
+										});
+									} else {
+										$('#docPubTable').datagrid('loaded');
+										$.messager.alert("警告操作!", data.errorMsg, 'warning');
+									}
+								}
+							});
+						}
+					})
+				}
+			}
+		},
+		lookAppr:function(){
+			var rows = $('#docPubTable').datagrid('getSelections');
+			if (rows.length > 1) {
+				$.messager.alert("警告操作!", "只能查看一条公文审批过程!", 'warning');
+			} else if (rows.length == 0) {
+				$.messager.alert("警告操作!", "请先选择一条公文查看!", 'warning');
+			}else{
+				if(rows[0].state=="0"){
+					$.messager.alert("警告操作!", "该公文并未提交审核!", 'warning');
+				}else{
+					$('#docPubDetail').show().window({
+						    width:'80%',
+						    height:'80%',
+						    modal:true,
+						    href:'document/getDocDetail.do',
+						    title:'审核详情',
+						    queryParams:{
+						    	docCode:rows[0].doc_code
+						    }
+					})
 				}
 			}
 		}

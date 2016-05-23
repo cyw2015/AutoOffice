@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.document.ApprovalMapper" >
+  <select id="getApprovalPage" resultType="com.cyw.office.entity.document.Approval">
+  	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			  	select a.id,d.doc_code as docCode,d.doc_title as docTitle,d.edittime as editTime,
+			  	d.creater,e.emp_name as createrName,t.dept_name as createrDept,
+			  	a.approver,te.emp_name as approverName,td.dept_name as approverDept,
+			  	a.appr_date as apprDate,a.appr_advice as apprAdvice ,a.state as apprState,
+			  	count(1) over() totalCount
+				from t_document  d  
+				join t_employee e on d.creater = e.emp_code
+				join t_department t on  e.dept_code = t.dept_code 
+				join t_approval a on d.doc_code = a.doc_code 
+				left join t_employee te on a.approver=te.emp_code
+				left join t_department td on te.dept_code=td.dept_code
+				where d.state <![CDATA[ <>  ]]> '0'
+				<if test="order!=null and sort!=null">
+					order by ${sort} ${order}
+				</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+  </select>
+  
+  <update id="updateDocAppr" parameterType="java.util.HashMap" >
+    update T_APPROVAL
+    <set >
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="apprAdvice != null" >
+        APPR_ADVICE = #{apprAdvice,jdbcType=OTHER},
+      </if>
+        APPR_DATE = sysdate,
+      <if test="state != null" >
+        STATE = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where doc_code = #{docCode}
+  </update>
+  <!-- updateDocState -->
+  <update id="updateDocState" parameterType="java.util.HashMap" >
+  		update t_document
+	    <set >
+	      <if test="pubTime != null " >
+	        PUBTIME = ${pubTime},
+	      </if>
+	      <if test="docState != null" >
+	        STATE = #{docState,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where DOC_CODE = #{docCode,jdbcType=VARCHAR} and state='1'
+  </update>
+</mapper>

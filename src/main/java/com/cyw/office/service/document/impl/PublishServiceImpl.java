@@ -41,5 +41,16 @@ public class PublishServiceImpl implements IPublishService {
 		this.documentMapper.insertRecipients(paramsMap);
 		return i;
 	}
+	@Override
+	public int sendAppr(Map<String, Object> paramsMap) {
+//		添加到审核表
+		int i = this.documentMapper.addAppr(paramsMap);
+		if(i!=0){
+//			修改公文状态
+			paramsMap.put("state", "1");
+			i=this.documentMapper.updateDocPub(paramsMap);
+		}
+		return i;
+	}
 
 }

@@ -42,7 +42,7 @@
 				where t.creater=#{creater }
 			</if>
 			<if test="order!=null and sort!=null">
-				order by ${sort} ${order}
+				order by t.${sort} ${order}
 			</if>
 			) a
 		) t
@@ -145,11 +145,19 @@
         STATE = #{state,jdbcType=VARCHAR},
       </if>
     </set>
-    where DOC_CODE = #{docCode,jdbcType=VARCHAR} and creater=#{creater,jdbcType=VARCHAR}
+    where DOC_CODE = #{docCode,jdbcType=VARCHAR} 
+    <if test="creater != null" >
+   	 and creater=#{creater,jdbcType=VARCHAR}
+    </if>
   </update>
   
   <delete id="deleteRecipientsByCode" parameterType="java.util.HashMap" >
     delete from t_recipients
     where doc_code=#{docCode,jdbcType=VARCHAR}
    </delete>
+   
+   <insert id="addAppr"  parameterType="java.util.HashMap"> 
+   		insert into t_approval (id, doc_code,  state)
+		values(SEQ_T_APPROVAL_ID.Nextval,#{docCode},'0')
+   </insert>
 </mapper>

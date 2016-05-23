@@ -31,10 +31,10 @@
 	 		</tr>
 	 		<tr>
 	 			<td >
-	 			<p style="margin:10px 0px">是否可用: <input id="userTable_add_enabled"> <input id="userTable_add_enabled_txt" style="display:none"></p> 
+	 			<p style="margin:10px 0px">是否可用: <input id="userTable_add_enabled"> <input id="userTable_add_enabled_txt" style="display:none" value="1"></p> 
 	 			</td>
 	 			<td>
-	 			<p style="margin:10px 0px"> 是否为系统用户: <input id="userTable_add_issys"><input id="userTable_add_issys_txt" style="display:none"></p>		
+	 			<p style="margin:10px 0px"> 是否为系统用户: <input id="userTable_add_issys"><input id="userTable_add_issys_txt" style="display:none" value="1"></p>		
 	 			</td>
 	 		</tr>
 	 		<tr>

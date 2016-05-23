@@ -41,4 +41,11 @@ public interface IPublishService {
 	 */
 	int updateDocPub(Map<String, Object> paramsMap);
 
+	/**
+	 * 送审
+	 * @param docCode
+	 * @return
+	 */
+	int sendAppr(Map<String, Object> paramsMap);
+
 }

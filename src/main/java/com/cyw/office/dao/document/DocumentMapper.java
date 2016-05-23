@@ -54,4 +54,12 @@ public interface DocumentMapper {
 	 * @param paramsMap
 	 */
 	void deleteRecipientsByCode(Map<String, Object> paramsMap);
+
+	/**
+	 * 添加审核表数据
+	 * @param paramsMap
+	 * @return
+	 */
+	int addAppr(Map<String, Object> paramsMap);
+
 }
