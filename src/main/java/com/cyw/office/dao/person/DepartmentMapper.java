@@ -41,5 +41,12 @@ public interface DepartmentMapper {
 	 * @param paramsMap
 	 */
 	void updateDept(Map<String, Object> paramsMap);
+
+	/**
+	 * 企业目录
+	 * @param paramsMap
+	 * @return
+	 */
+	List<Department> getEnterprise(Map<String, Object> paramsMap);
   
 }

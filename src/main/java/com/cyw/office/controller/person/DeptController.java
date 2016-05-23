@@ -214,4 +214,39 @@ public class DeptController {
 		}
 		return obj;
 	}
+
+	/**
+	 * 获取企业人员目录
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getEnterprise.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONArray getEnterprise(HttpServletRequest request,
+			HttpServletResponse response) {
+		String deptCode = request.getParameter("id");
+		if (deptCode == null) {
+			deptCode = "0";
+		}
+		List<Department> deptList= null;
+		Map<String,Object> paramsMap = new HashMap<String,Object>();
+		paramsMap.put("deptCode", deptCode);
+		JSONArray arr = new JSONArray();
+		try{
+			deptList = deptService.getEnterprise(paramsMap);
+			if(deptList!=null &&deptList.size()!=0){
+				for (Department dept : deptList) {
+					JSONObject objInfo = new JSONObject();
+					objInfo.put("id",dept.getDeptCode());
+					objInfo.put("text", dept.getDeptName());
+					objInfo.put("state", dept.getState());
+					arr.add(objInfo);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return arr;
+	}
 }

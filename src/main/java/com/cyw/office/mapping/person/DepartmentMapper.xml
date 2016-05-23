@@ -31,6 +31,22 @@
 		) t
   </select>
   
+   <select id="getEnterprise" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+	with s as (select t.dept_code ,t.super_dept from t_department t),
+	 emp as (select e.dept_code,e.emp_code from t_employee  e)
+	select  distinct  t.dept_code, t.dept_name,case when s.dept_code is null and emp.dept_code is null   then 'open' else 'closed' end as state
+	from t_department t left join s on t.dept_code = s.super_dept 
+	left join emp on t.dept_code = emp.dept_code
+	<if test="deptCode!=null">
+				where t.super_dept=#{deptCode }
+	</if>
+	union all 
+	select e.emp_code,e.emp_name,'open' as state   from t_employee e
+	<if test="deptCode!=null">
+				where e.dept_code =#{deptCode }
+	</if>
+  </select>
+  
   <select id="findDeptByDeptCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

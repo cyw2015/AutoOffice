@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyw.office.dao.document.DocumentMapper" >
+  <resultMap id="BaseResultMap" type="com.cyw.office.entity.document.Document" >
+    <id column="DOC_CODE" property="docCode" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DOC_TITLE" property="docTitle" jdbcType="OTHER" />
+    <result column="DOC_CONTENT" property="docContent" jdbcType="OTHER" />
+    <result column="EDITTIME" property="edittime" jdbcType="TIMESTAMP" />
+    <result column="PUBTIME" property="pubtime" jdbcType="TIMESTAMP" />
+    <result column="RECIPIENTS" property="recipients" jdbcType="OTHER" />
+     <result column="RECIPIENTSCODE" property="recipientsCode" jdbcType="OTHER" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="OTHER" />
+    <result column="ATTACHMENT_PATH" property="attachmentPath" jdbcType="OTHER" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+     <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DOC_CODE, ID, DOC_TITLE, DOC_CONTENT, EDITTIME, PUBTIME, ATTACHMENT, 
+    STATE, CREATER,ATTACHMENT_PATH
+  </sql>
+  <select id="getDocPubPage" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+ with s as ( select tmp.doc_code ,wm_concat(tmp.emp_code) as recipientsCode,wm_concat(tmp.emp_name) as recipients from (
+   select t.doc_code,e.emp_code ,e.emp_name from  t_document t
+   left join t_recipients r on t.doc_code=r.doc_code 
+   left join t_employee e on  r.emp_code=e.emp_code
+   union all 
+    select t.doc_code,d.dept_code,d.dept_name from  t_document t
+    join t_recipients r on t.doc_code=r.doc_code 
+    join t_department d on  r.emp_code=d.dept_code
+  )tmp group by tmp.doc_code)
+  
+   	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+			 select t.*,s.recipientsCode,s.recipients,
+     	 	count(1) over() totalCount
+			from t_document t
+			left join s on t.doc_code=s.doc_code
+			<if test="creater!=null">
+				where t.creater=#{creater }
+			</if>
+			<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+  </select>
+  
+  <select id="findDocByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_document
+    where DOC_CODE = #{docCode,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insert" parameterType="java.util.HashMap" >
+    insert into T_DOCUMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      <if test="docCode != null" >
+        DOC_CODE,
+      </if>
+      <if test="docTitle != null" >
+        DOC_TITLE,
+      </if>
+      <if test="docContent != null" >
+        DOC_CONTENT,
+      </if>
+        EDITTIME,
+      <if test="attachment != null" >
+        ATTACHMENT,
+      </if>
+        STATE,
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="attachmentPath != null" >
+        ATTACHMENT_PATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      SEQ_T_DOCUMENT_ID.nextval,
+      <if test="docCode != null" >
+        #{docCode,jdbcType=VARCHAR},
+      </if>
+      <if test="docTitle != null" >
+        #{docTitle,jdbcType=OTHER},
+      </if>
+      <if test="docContent != null" >
+        #{docContent,jdbcType=OTHER},
+      </if>
+		sysdate,
+      <if test="attachment != null" >
+        #{attachment,jdbcType=OTHER},
+      </if>
+		'0',
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+        <if test="attachmentPath != null" >
+        #{attachmentPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertRecipients"  parameterType="java.util.HashMap"> 
+  		insert into t_recipients (doc_code, emp_code) 
+		select #{docCode} ,A.* from(
+	    <foreach collection="recipients" item="item" index="index" separator="union all " >
+	       (select #{item } from dual)
+	    </foreach>
+	    )A
+  </insert>
+  <delete id="deleteDocByCode" parameterType="java.util.HashMap" >
+    delete from T_DOCUMENT
+    where DOC_CODE in 
+	 <foreach collection="docCode" item="doc_code" index="index" open="(" separator="," close=")">
+    #{doc_code }
+    </foreach>
+	and creater=#{creater,jdbcType=VARCHAR}
+   </delete>
+   
+   <update id="updateDocPub" parameterType="java.util.HashMap" >
+    update T_DOCUMENT
+    <set >
+      <if test="docTitle != null" >
+        DOC_TITLE = #{docTitle,jdbcType=OTHER},
+      </if>
+      <if test="docContent != null" >
+        DOC_CONTENT = #{docContent,jdbcType=OTHER},
+      </if>
+      <if test="pubTime != null" >
+        PUBTIME = #{pubtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attachment != null" >
+        ATTACHMENT = #{attachment,jdbcType=OTHER},
+      </if>
+        <if test="attachmentPath != null" >
+        ATTACHMENT_PATH = #{attachmentPath,jdbcType=OTHER},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DOC_CODE = #{docCode,jdbcType=VARCHAR} and creater=#{creater,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteRecipientsByCode" parameterType="java.util.HashMap" >
+    delete from t_recipients
+    where doc_code=#{docCode,jdbcType=VARCHAR}
+   </delete>
+</mapper>

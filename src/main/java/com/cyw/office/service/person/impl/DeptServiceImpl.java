@@ -34,5 +34,9 @@ public class DeptServiceImpl implements IDeptService {
 	public void updateDept(Map<String, Object> paramsMap) {
 	  this.deptMapper.updateDept(paramsMap);
 	}
+	@Override
+	public List<Department> getEnterprise(Map<String, Object> paramsMap) {
+		return this.deptMapper.getEnterprise(paramsMap);
+	}
 
 }
