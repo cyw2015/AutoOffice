@@ -14,6 +14,7 @@
     <result column="ATTACHMENT_PATH" property="attachmentPath" jdbcType="OTHER" />
     <result column="STATE" property="state" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+     <result column="CREATER_NAME" property="createrName" jdbcType="VARCHAR" />
      <result column="totalCount" property="totalCount" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -160,4 +161,80 @@
    		insert into t_approval (id, doc_code,  state)
 		values(SEQ_T_APPROVAL_ID.Nextval,#{docCode},'0')
    </insert>
+   
+   <resultMap type="java.util.HashMap" id="docDetail">
+   		<id column="docCode" property="docCode"/>
+   		<result column="docTitle" property="docTitle"/>
+   		<result column="creater" property="creater"/>
+   		<result column="createrName" property="createrName"/>
+   		<result column="createrDeptCode" property="createrDeptCode"/>
+   		<result column="createrDeptName" property="createrDeptName"/>
+   		<result column="docContent" property="docContent"/>
+   		<result column="pubtime" property="pubtime"/>
+   		<result column="attachment" property="attachment"/>
+   		<result column="attachmentPath" property="attachmentPath"/>
+   		<collection property="rec" javaType="java.util.List" resultMap="recDetail"></collection>
+   		<collection property="appr" javaType="java.util.HashMap" resultMap="apprDetail"></collection>
+   </resultMap>
+   <resultMap type="java.util.HashMap" id="recDetail">
+   		<result column="recCode" property="recCode"/>
+   		<result column="recName" property="recName"/>
+   		<result column="recDeptCode" property="recDeptCode"/>
+   		<result column="recDeptName" property="recDeptName"/>
+   </resultMap>
+   
+   <resultMap type="java.util.HashMap" id="apprDetail">
+   		<result column="state" property="state"/>
+   		<result column="apprDate" property="apprDate"/>
+   		<result column="apprAdvice" property="apprAdvice"/>
+		<result column="approver" property="approver"/>
+		<result column="apprName" property="apprName"/>
+		<result column="apprDeptCode" property="apprDeptCode"/>
+		<result column="apprDeptName" property="apprDeptName"/>
+   </resultMap>
+   
+   <select id="getDocDetail" resultMap="docDetail"  parameterType="java.lang.String"> 
+   		with rec as 
+		(select t.doc_code,e.emp_code,e.emp_name,d.dept_code,d.dept_name from t_recipients  t  
+		join t_employee e on  t.emp_code = e.emp_code 
+		join t_department d on  e.dept_code =  d.dept_code)
+		,
+		appr as (select t.doc_code,t.state,t.appr_date,t.appr_advice,t.approver,e.emp_name,e.dept_code,d.dept_name from t_approval t
+		left join t_employee e on t.approver = e.emp_code
+		left join t_department d on e.dept_code = d.dept_code)
+		
+		select t.doc_code as docCode,t.doc_title as docTitle,
+		t.creater,e.emp_name as createrName,e.dept_code as createrDeptCode,d.dept_name as createrDeptName,
+		t.doc_content as docContent ,t.pubtime,
+		r.emp_code as recCode ,r.emp_name as recName ,r.dept_code as recDeptCode ,r.dept_name as recDeptName ,
+		t.attachment,t.attachment_path as attachmentPath ,
+		a.state ,a.appr_date as apprDate ,a.appr_advice as apprAdvice,a.approver,a.emp_name as apprName, a.dept_code as apprDeptCode,a.dept_name as apprDeptName
+		from t_document t
+		left join t_employee e on t.creater = e.emp_code
+		left join t_department d on e.dept_code = d.dept_code
+		left join rec r on t.doc_code = r.doc_code
+		left join appr a on t.doc_code = a.doc_code
+		where t.doc_code = #{docCode}
+   </select>
+   
+   <!-- getViewDocPage -->
+ <select id="getViewDocPage" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    	select t.* from (
+			select a.*, rownum as rowIndex
+			from (
+		   		select  t.id,t.doc_code,t.doc_title,t.creater,emp.emp_name as creater_name,t.pubtime ,
+		   		count(1) over() totalCount
+		   		from t_document t
+		   		left join t_employee emp on t.creater = emp.emp_code
+				left join t_recipients r on t.doc_code = r.doc_code 
+				left join t_employee e on r.emp_code = e.emp_code
+				where  t.state ='2' and e.emp_code =#{custom}
+				<if test="order!=null and sort!=null">
+				order by ${sort} ${order}
+			</if>
+			) a
+		) t
+		where t.rowIndex > #{start }
+			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+   </select>
 </mapper>

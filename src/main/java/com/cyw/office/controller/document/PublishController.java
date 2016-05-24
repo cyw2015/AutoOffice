@@ -374,14 +374,13 @@ public class PublishController {
 			int i = pubService.sendAppr(paramsMap);
 			if(i!=0){
 				obj.put("error", "0");
-				obj.put("errorMsg", "文件上传失败");
 			}else{
 				obj.put("error", "1");
-				obj.put("errorMsg", "文件上传失败");
+				obj.put("errorMsg", "送审失败");
 			}
 		}catch (Exception e){
 			obj.put("error", "1");
-			obj.put("errorMsg", "文件上传失败");
+			obj.put("errorMsg", "送审失败");
 			e.printStackTrace();
 		}
 		return obj;

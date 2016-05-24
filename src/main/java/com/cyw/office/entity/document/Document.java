@@ -24,8 +24,17 @@ public class Document extends BaseEntity{
     private String state;
 
     private String creater;
+    private String createrName;
+    
+    public String getCreaterName() {
+		return createrName;
+	}
 
-    private Object attachmentPath;
+	public void setCreaterName(String createrName) {
+		this.createrName = createrName;
+	}
+
+	private Object attachmentPath;
     private Object recipientsCode;
     public Object getRecipientsCode() {
 		return recipientsCode;

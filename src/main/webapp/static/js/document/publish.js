@@ -255,9 +255,11 @@ $(document).ready(function() {
 						    height:'80%',
 						    modal:true,
 						    href:'document/getDocDetail.do',
+						    minimizable:false,
 						    title:'审核详情',
 						    queryParams:{
-						    	docCode:rows[0].doc_code
+						    	docCode:rows[0].doc_code,
+						    	type:"1"
 						    }
 					})
 				}

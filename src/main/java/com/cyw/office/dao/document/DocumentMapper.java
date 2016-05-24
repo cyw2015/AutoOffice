@@ -62,4 +62,18 @@ public interface DocumentMapper {
 	 */
 	int addAppr(Map<String, Object> paramsMap);
 
+	/**
+	 * 获取公文审核详情
+	 * @param docCode
+	 * @return
+	 */
+	Map<String, Object> getDocDetail(String docCode);
+
+	/**
+	 * 获取可查看的公文
+	 * @param paramsMap
+	 * @return
+	 */
+	List<Document> getViewDocPage(Map<String, Object> paramsMap);
+
 }

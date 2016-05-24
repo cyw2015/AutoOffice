@@ -204,6 +204,28 @@ $(document).ready(function() {
 					$('#docApprTable_edit').dialog('open');	
 				}
 			}
+		},
+		look:function(){
+			var rows = $('#docApprTable').datagrid('getSelections');
+			if (rows.length > 1) {
+				$.messager.alert("警告操作!", "只能查看一条公文!", 'warning');
+			} else if (rows.length == 0) {
+				$.messager.alert("警告操作!", "请先选择一条公文查看!", 'warning');
+			}else{
+					$('#apprDeatil').show().window({
+						    width:'80%',
+						    height:'80%',
+						    modal:true,
+						    href:'document/getDocDetail.do',
+						    minimizable:false,
+						    title:'查看详情',
+						    queryParams:{
+						    	docCode:rows[0].docCode,
+						    	type:"1"
+						    }
+					})
+			}
+		
 		}
 	}
 	

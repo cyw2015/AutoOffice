@@ -54,6 +54,8 @@
 	 		</tr>
 	 	</table>
 	</form>
+	
+	<div id="apprDeatil" style="display:none" ></div>
   	<script type="text/javascript" src="${staticPath }/static/js/document/approval.js"></script>
 </body>
 </html>
