@@ -12,9 +12,15 @@
    		<sec:authorize access="hasRole('ROLE_RES_SYS_USER_ADD')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="userTable_tool.add();">增加用户</a>
    		</sec:authorize>
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_USER_EDIT')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="userTable_tool.edit();">修改用户</a>
+		</sec:authorize>
+		<sec:authorize access="hasRole('ROLE_RES_SYS_USER_CONFIG')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="userTable_tool.config();">赋予角色</a>
+   		</sec:authorize>
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_USER_DELETE')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="userTable_tool.remove();">删除</a>
+   		</sec:authorize>
    		</div>
    	</div>
 	<table id="userTable"></table>

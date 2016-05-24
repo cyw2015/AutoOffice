@@ -9,10 +9,18 @@
 <body>
 	<div id="roleTable_tool" style="padding:5px;">
    		<div style="margin-bottom:5px">
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_ROLE_ADD')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="roleTable_tool.add();">增加角色</a>
+   		</sec:authorize>	
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_ROLE_EDIT')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="roleTable_tool.edit();">修改角色</a>
+   		</sec:authorize>	
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_ROLE_CONFIG')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="roleTable_tool.config();">配置权限</a>
+   		</sec:authorize>
+   		<sec:authorize access="hasRole('ROLE_RES_SYS_ROLE_DELETE')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="roleTable_tool.remove();">删除角色</a>
+   		</sec:authorize>
    		</div>
    	</div>
 	<table id="roleTable"></table>

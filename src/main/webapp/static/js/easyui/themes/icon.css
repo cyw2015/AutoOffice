@@ -123,3 +123,16 @@
 .icon-posi{
 	background:url('icons/office/position.png') no-repeat center center;
 }
+
+.icon-docs{
+	background:url('icons/office/docs.png') no-repeat center center;
+}
+.icon-docPub{
+	background:url('icons/office/docPub.png') no-repeat center center;
+}
+.icon-approval{
+	background:url('icons/office/approval.png') no-repeat center center;
+}
+.icon-docLook{
+	background:url('icons/office/docLook.png') no-repeat center center;
+}

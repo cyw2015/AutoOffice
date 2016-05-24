@@ -9,10 +9,18 @@
 <body>
 	<div id="authTable_tool" style="padding:5px;">
    		<div style="margin-bottom:5px">
+   		  <sec:authorize access="hasRole('ROLE_RES_SYS_AUTH_ADD')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="authTable_tool.add();">增加权限</a>
+   			</sec:authorize>
+   			 <sec:authorize access="hasRole('ROLE_RES_SYS_AUTH_EDIT')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="authTable_tool.edit();">修改权限</a>
+   			</sec:authorize>
+   			 <sec:authorize access="hasRole('ROLE_RES_SYS_AUTH_CONFIG')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="authTable_tool.config();">配置资源</a>
+   			</sec:authorize>
+   			<sec:authorize access="hasRole('ROLE_RES_SYS_AUTH_DELETE')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="authTable_tool.remove();">删除权限</a>
+   			</sec:authorize>
    		</div>
    	</div>
 	<table id="authTable"></table>

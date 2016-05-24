@@ -9,17 +9,21 @@
 <body>
 	<div id="docPubTable_tool" style="padding:5px;">
    		<div style="margin-bottom:5px">
-   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_ADD')">
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="docPubTable_tool.add();">增加公文</a>
-   		</sec:authorize>
-   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_EDIT')">
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="docPubTable_tool.edit();">修改公文</a>
-   		</sec:authorize>
-   		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="docPubTable_tool.approval();">送审</a>
-   		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="docPubTable_tool.lookAppr();">查看审批详情</a>
-   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_DELETE')">
-   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="docPubTable_tool.remove();">删除公文</a>
-   		</sec:authorize>
+	   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_ADD')">
+	   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="docPubTable_tool.add();">增加公文</a>
+	   		</sec:authorize>
+	   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_EDIT')">
+	   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="docPubTable_tool.edit();">修改公文</a>
+	   		</sec:authorize>
+	   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_APPROVAL')">
+	   		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="docPubTable_tool.approval();">送审</a>
+	   		</sec:authorize>
+	   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_LOOKAPPR')">
+	   		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="docPubTable_tool.lookAppr();">查看审批详情</a>
+	   		</sec:authorize>
+	   		<sec:authorize access="hasRole('ROLE_RES_DOC_PUB_DELETE')">
+	   			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="docPubTable_tool.remove();">删除公文</a>
+	   		</sec:authorize>
    		</div>
    	</div>
 	<table id="docPubTable"></table>

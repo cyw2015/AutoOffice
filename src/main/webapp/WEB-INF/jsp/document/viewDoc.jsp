@@ -8,7 +8,9 @@
 </head>
 <body>
 	<div id="viewDocTable_tool" style="padding:5px;">
+	<sec:authorize access="hasRole('ROLE_RES_DOC_LOOK_DEC')">
 		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="viewDocTable_tool.lookDoc();">查看详情</a>
+	</sec:authorize>
 	</div>
 	<table id="viewDocTable"></table>
 	<div id="viewDocDetail" style="display:none" ></div>

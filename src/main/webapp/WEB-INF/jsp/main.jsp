@@ -40,8 +40,8 @@ var ctx = '${staticPath }';
 	<div data-options="region:'north',title:'North Title',split:true,noheader:true" 
 	style="height:60px;background:#666;background-image:url(${staticPath }/static/images/head.png)">
 		<div class="logo">OA管理系统</div>
-		<div class="logout">
-			您好，<a href="logout">退出</a>
+		<div class="logout" >
+		 	您好,<a href="logout">退出</a>
 		</div>
 	</div>
 	<!-- 底 -->

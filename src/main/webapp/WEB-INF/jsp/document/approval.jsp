@@ -9,8 +9,12 @@
 <body>
 	<div id="docApprTable_tool" style="padding:5px;">
    		<div style="margin-bottom:5px">
+   		<sec:authorize access="hasRole('ROLE_RES_DOC_APPROVE_LOOK')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="docApprTable_tool.look();">查看详情</a>
+   			</sec:authorize>
+   			<sec:authorize access="hasRole('ROLE_RES_DOC_APPROVE_EDIT')">
    			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="docApprTable_tool.edit();">审批</a>
+   			</sec:authorize>
    		</div>
    	</div>
 	<table id="docApprTable"></table>
