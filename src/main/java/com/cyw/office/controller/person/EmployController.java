@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -291,6 +292,28 @@ public class EmployController {
 			obj.put("error",'1');
 			obj.put("errorMsg","删除失败");
 			e.printStackTrace();
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value = "/getUserEmpImage.do")
+	@ResponseBody
+	public JSONObject getUserEmpImage(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String user = request.getParameter("user");
+		if(user==null||user.equals("")){
+			obj.put("error","0");
+			obj.put("errorMsg","empDefault.jpg");
+		}else{
+			Employee emp=empService.findEmpByCode(user);
+			if(emp==null||StringUtils.isEmpty(emp.getEmpImage())){
+				obj.put("error","0");
+				obj.put("errorMsg","empDefault.jpg");
+			}else{
+				obj.put("error","0");
+				obj.put("errorMsg",emp.getEmpImage());
+			}
 		}
 		return obj;
 	}

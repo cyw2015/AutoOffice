@@ -19,4 +19,5 @@ public interface IUserService {
 	public int deleteUsers(String[] userCodes);
 
 	public int configRoleSave(List<Map<String, Object>> list);
+
 }

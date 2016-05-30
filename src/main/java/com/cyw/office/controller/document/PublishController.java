@@ -243,8 +243,7 @@ public class PublishController {
 			HttpServletResponse response) {
 		String attachmentPath = request.getParameter("attachmentPath");
 		String attachment = request.getParameter("attachment");
-		response.setContentType("application/x-msdownload");
-
+		response.setContentType("image/gif");
 		try {
 			response.setHeader("Content-Disposition", "attachment; filename="
 					+ new String(attachment.getBytes("GB2312"), "ISO-8859-1"));
