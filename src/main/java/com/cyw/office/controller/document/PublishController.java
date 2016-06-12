@@ -68,6 +68,7 @@ public class PublishController {
 		String rows = request.getParameter("rows");
 		String sort = request.getParameter("sort");
 		String order = request.getParameter("order");
+		String isContent = request.getParameter("isContent");
 		PageBean pageBean = new PageBean(Integer.parseInt(page!=null&&page!=""?page:"0"),
 				Integer.parseInt(rows!=null&&rows!=""?rows:"0"));
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
@@ -87,14 +88,15 @@ public class PublishController {
 					objInfo.put("id", doc.getId());
 					objInfo.put("doc_code", doc.getDocCode());
 					objInfo.put("doc_title", (String)doc.getDocTitle());
-					objInfo.put("doc_content", (String)doc.getDocContent());
+					if(isContent==null||isContent.equals(""))
+						objInfo.put("doc_content", (String)doc.getDocContent());
 					objInfo.put("editTime", DateUtil.format(doc.getEdittime()));
 					objInfo.put("pubTime",DateUtil.format( doc.getPubtime()));
 					objInfo.put("recipients", (String)doc.getRecipients());
 					objInfo.put("recipientsCode", (String)doc.getRecipientsCode());
 					objInfo.put("state", doc.getState());
-					objInfo.put("attachment", (String)doc.getAttachment());
-					objInfo.put("attachmentPath", (String)doc.getAttachmentPath());
+					objInfo.put("attachment", doc.getAttachment()!=null?(String)doc.getAttachment():"");
+					objInfo.put("attachmentPath", doc.getAttachmentPath()!=null?(String)doc.getAttachmentPath():"");
 					arr.add(objInfo);
 				}
 				obj.put("rows", arr);
@@ -210,7 +212,6 @@ public class PublishController {
 		try{
 			int result=pubService.deleteDocByCode(paramsMap);
 			if(result!=0){
-				obj.put("error",'0');
 				//删除对应 
 				for(int i = 0;i<paths.length;i++){
 					if(!paths[i].isEmpty()){
@@ -220,6 +221,8 @@ public class PublishController {
 						}
 					}
 				}
+				obj.put("error",'0');
+				obj.put("errorMsg","");
 			}else{
 				obj.put("error",'1');
 				obj.put("errorMsg","删除失败");
@@ -243,7 +246,7 @@ public class PublishController {
 			HttpServletResponse response) {
 		String attachmentPath = request.getParameter("attachmentPath");
 		String attachment = request.getParameter("attachment");
-		response.setContentType("image/gif");
+		response.setContentType("multipart/form-data");  
 		try {
 			response.setHeader("Content-Disposition", "attachment; filename="
 					+ new String(attachment.getBytes("GB2312"), "ISO-8859-1"));
@@ -373,6 +376,7 @@ public class PublishController {
 			int i = pubService.sendAppr(paramsMap);
 			if(i!=0){
 				obj.put("error", "0");
+				obj.put("errorMsg", "");
 			}else{
 				obj.put("error", "1");
 				obj.put("errorMsg", "送审失败");

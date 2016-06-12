@@ -33,5 +33,9 @@ public class EmpServiceImpl implements IEmpService {
 	public int deleteEmploy(String[] empCodes) {
 		return this.empMapper.deleteEmploy(empCodes);
 	}
+	@Override
+	public List<Employee> getContacts() {
+		return this.empMapper.getContacts();
+	}
 
 }

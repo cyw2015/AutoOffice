@@ -39,7 +39,13 @@
 		where t.rowIndex > #{start }
 			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
   </select>
-  
+  <select id="getContacts" parameterType="java.util.HashMap"  resultMap="BaseResultMap">
+	  select t.*,d.dept_name,p.posi_name
+      from t_employee t
+      left join  t_department d on t.dept_code = d.dept_code
+      left join t_position p on t.posi_code = p.id
+      order by p.posi_level asc
+  </select>
   <select id="findEmpByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

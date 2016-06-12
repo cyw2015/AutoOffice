@@ -317,4 +317,43 @@ public class EmployController {
 		}
 		return obj;
 	}
+
+	/**
+	 * 获取通讯录
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getContacts.do")
+	@ResponseBody
+	public JSONArray getContacts(HttpServletRequest request,HttpServletResponse response){
+		JSONArray arr = new JSONArray();
+		List<Employee> empList = null;
+		try {
+			empList = empService.getContacts();
+			if (empList != null && empList.size() != 0) {
+				for (Employee emp : empList) {
+					JSONObject objInfo = new JSONObject();
+					objInfo.put("id", emp.getId());
+					objInfo.put("emp_code", emp.getEmpCode());
+					objInfo.put("emp_name", emp.getEmpName());
+					objInfo.put("emp_sex", emp.getEmpSex());
+					objInfo.put("dept_code", emp.getDeptCode());
+					objInfo.put("dept_name", emp.getDeptName());
+					objInfo.put("posi_code", emp.getPosiCode());
+					objInfo.put("posi_name", emp.getPosiName());
+					objInfo.put("entrytime", DateUtil.format(emp.getEntrytime()));
+					objInfo.put("birthday", DateUtil.format(emp.getBirthday()));
+					objInfo.put("email", emp.getEmail()!=null&&emp.getEmail()!=""?emp.getEmail():"");
+					objInfo.put("address", emp.getAddress()!=null&&emp.getAddress()!=""? emp.getAddress():"");
+					objInfo.put("telphone", emp.getTelphone()!=null?emp.getTelphone():"");
+					objInfo.put("emp_image", emp.getEmpImage()!=null?emp.getEmpImage():"");
+					arr.add(objInfo);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
+	}
 }

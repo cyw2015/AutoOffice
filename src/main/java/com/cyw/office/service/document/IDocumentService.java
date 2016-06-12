@@ -20,4 +20,11 @@ public interface IDocumentService {
 	 */
 	List<Document> getViewDocPage(Map<String, Object> paramsMap);
 
+	/**
+	 * 查看公文json
+	 * @param docCode
+	 * @return
+	 */
+	Document findDocDetailByCode(String docCode);
+
 }

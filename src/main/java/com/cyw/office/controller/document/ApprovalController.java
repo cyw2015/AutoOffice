@@ -125,6 +125,7 @@ public class ApprovalController {
 			int i = apprService.updateDocAppr(paramsMap);
 			if(i!=0){
 				obj.put("error", "0");
+				obj.put("errorMsg", "");
 			}else{
 				obj.put("error", "1");
 				obj.put("errorMsg", "审核失败");

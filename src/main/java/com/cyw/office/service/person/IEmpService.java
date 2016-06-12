@@ -40,5 +40,10 @@ public interface IEmpService {
 	 * @return
 	 */
 	int deleteEmploy(String[] empCodes);
+	/**
+	 * 获取联系人
+	 * @return
+	 */
+	List<Employee> getContacts();
 
 }

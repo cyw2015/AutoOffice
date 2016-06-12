@@ -76,4 +76,11 @@ public interface DocumentMapper {
 	 */
 	List<Document> getViewDocPage(Map<String, Object> paramsMap);
 
+	/**
+	 * 公文详情
+	 * @param docCode
+	 * @return
+	 */
+	Document findDocDetailByCode(String docCode);
+
 }

@@ -21,5 +21,9 @@ public class DocumentServiceImpl implements IDocumentService{
 	public List<Document> getViewDocPage(Map<String, Object> paramsMap) {
 		return this.documentMapper.getViewDocPage(paramsMap);
 	}
+	@Override
+	public Document findDocDetailByCode(String docCode) {
+		return this.documentMapper.findDocDetailByCode(docCode);
+	}
 
 }

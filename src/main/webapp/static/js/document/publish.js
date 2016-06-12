@@ -361,7 +361,7 @@ function deleteDoc(){
 						return;
 					}
 					ids.push(rows[i].doc_code);
-					attachmentPaths.push(rows[i].attachmentPaths)
+					attachmentPaths.push(rows[i].attachmentPath)
 				}
 				$.ajax({
 					type : 'POST',

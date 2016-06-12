@@ -42,5 +42,11 @@ public interface EmployeeMapper {
 	 * @return
 	 */
 	int deleteEmploy(String[] empCodes);
+
+	/**
+	 * 获取联系人信息
+	 * @return
+	 */
+	List<Employee> getContacts();
  
 }

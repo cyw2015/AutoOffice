@@ -51,6 +51,21 @@
 			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
   </select>
   
+  <select id="findDocDetailByCode" resultType="com.cyw.office.entity.document.Document" parameterType="java.lang.String" >
+  	 with s as ( select tmp.doc_code ,wm_concat(tmp.emp_code) as recipientsCode,wm_concat(tmp.emp_name) as recipients from (
+   select t.doc_code,e.emp_code ,e.emp_name from  t_document t
+   left join t_recipients r on t.doc_code=r.doc_code 
+   left join t_employee e on  r.emp_code=e.emp_code
+  )tmp group by tmp.doc_code)
+       select t.id, t.doc_code as docCode , t.doc_title as docTitle , t.doc_content as docContent ,
+        t.edittime, t.pubtime, t.attachment, t.state, t.creater, t.attachment_path as attachmentPath,
+        s.recipientsCode,s.recipients,e.emp_name as createrName
+      from t_document t
+      left join s on t.doc_code=s.doc_code
+      left join t_employee e on t.creater=e.emp_code
+      where t.doc_code=#{docCode,jdbcType=VARCHAR}
+  </select>
+  
   <select id="findDocByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -230,11 +245,13 @@
 				left join t_employee e on r.emp_code = e.emp_code
 				where  t.state ='2' and e.emp_code =#{custom}
 				<if test="order!=null and sort!=null">
-				order by ${sort} ${order}
-			</if>
+					order by ${sort} ${order}
+				</if>
 			) a
 		) t
+		<if test="getAll == null">
 		where t.rowIndex > #{start }
 			  and t.rowIndex <![CDATA[ <=  ]]> #{end }
+	    </if>
    </select>
 </mapper>
