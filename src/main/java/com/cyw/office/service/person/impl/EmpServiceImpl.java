@@ -37,5 +37,4 @@ public class EmpServiceImpl implements IEmpService {
 	public List<Employee> getContacts() {
 		return this.empMapper.getContacts();
 	}
-
 }

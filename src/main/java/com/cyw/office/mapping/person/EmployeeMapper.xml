@@ -48,8 +48,10 @@
   </select>
   <select id="findEmpByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
-    <include refid="Base_Column_List" />
-    from t_employee
+    t.*,d.dept_name,p.posi_name
+    from t_employee t
+    left join  t_department d on t.dept_code = d.dept_code
+    left join t_position p on t.posi_code = p.id
     where emp_code = #{empCode,jdbcType=VARCHAR}
   </select>
   

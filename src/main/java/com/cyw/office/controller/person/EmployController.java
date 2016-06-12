@@ -108,6 +108,56 @@ public class EmployController {
 	}
 	
 	/**
+	 * 获取用户详情
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "getEmployDetail.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getEmployDetail(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String empCode = request.getParameter("empCode");
+		try {
+			if (empCode != null) {
+				Employee emp = empService.findEmpByCode(empCode);
+				if (emp != null) {
+					obj.put("id", emp.getId());
+					obj.put("emp_code", emp.getEmpCode());
+					obj.put("emp_name", emp.getEmpName());
+					obj.put("emp_sex", emp.getEmpSex());
+					obj.put("dept_code", emp.getDeptCode());
+					obj.put("dept_name", emp.getDeptName());
+					obj.put("posi_code", emp.getPosiCode());
+					obj.put("posi_name", emp.getPosiName());
+					obj.put("entrytime", DateUtil.format(emp.getEntrytime()));
+					obj.put("birthday", DateUtil.format(emp.getBirthday()));
+					obj.put("email", emp.getEmail() != null
+							&& emp.getEmail() != "" ? emp.getEmail() : "");
+					obj.put("address",
+							emp.getAddress() != null && emp.getAddress() != "" ? emp
+									.getAddress() : "");
+					obj.put("telphone",
+							emp.getTelphone() != null ? emp.getTelphone() : "");
+					obj.put("emp_image",
+							emp.getEmpImage() != null ? emp.getEmpImage() : "");
+				} else {
+					obj.put("error", "1");
+					obj.put("errorMsg", "查询出错");
+				}
+			} else {
+				obj.put("error", "1");
+				obj.put("errorMsg", "查询出错");
+			}
+		} catch (Exception e) {
+			obj.put("error", "1");
+			obj.put("errorMsg", "查询出错");
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	/**
 	 * 添加员工信息
 	 * @param request
 	 * @param response
@@ -254,6 +304,43 @@ public class EmployController {
 		return obj;
 	}
 
+	/**
+	 * 修改信息2
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/updatePerson.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject updatePerson(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String empCode = request.getParameter("empCode");
+		String empName = request.getParameter("empName");
+		String empSex = request.getParameter("empSex");
+		String telphone = request.getParameter("telphone");
+		String birthday = request.getParameter("birthday");
+		String email = request.getParameter("email");
+		String address = request.getParameter("address");
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("empCode",empCode);
+		paramsMap.put("empName",empName);
+		paramsMap.put("empSex",empSex);
+		paramsMap.put("telphone",telphone);
+		paramsMap.put("birthday",birthday);
+		paramsMap.put("email",email);
+		paramsMap.put("address",address);	
+		try{
+			 empService.updateEmploy(paramsMap);
+			 obj.put("error", "0");
+			 obj.put("errorMsg", "");
+		} catch(Exception e){
+			obj.put("error", "1");
+			obj.put("errorMsg", "修改失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
 	/**
 	 * 删除员工
 	 * @param request
