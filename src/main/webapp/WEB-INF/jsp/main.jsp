@@ -41,7 +41,7 @@ var ctx = '${staticPath }';
 	style="height:60px;background:#666;background-image:url(${staticPath }/static/images/head.png)">
 		<div class="logo">OA管理系统</div>
 		<div class="logout" >
-		 	您好,<a href="logout">退出</a>
+		 	您好,${username } <a href="logout">退出</a>
 		</div>
 	</div>
 	<!-- 底 -->

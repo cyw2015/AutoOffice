@@ -129,9 +129,19 @@ public class PublishController {
 		String[] reci = request.getParameterValues("recipients");
 		//最后一个为空值
 		List<String> recipients=new ArrayList<String>();
-		for(int i=0;i<reci.length;i++){
-			if(!reci[i].isEmpty()){
-				recipients.add(reci[i]);
+		String type = request.getParameter("type");
+		if(type!=null&&type.equals("android")){
+			String[] reci2 = reci[0].split(",");
+			for(int i=0;i<reci2.length;i++){
+				if(!reci2[i].isEmpty()){
+					recipients.add(reci2[i]);
+				}
+			}
+		}else{
+			for(int i=0;i<reci.length;i++){
+				if(!reci[i].isEmpty()){
+					recipients.add(reci[i]);
+				}
 			}
 		}
 		String docContent = request.getParameter("docContent");
@@ -287,9 +297,19 @@ public class PublishController {
 		String[] reci = request.getParameterValues("recipients");
 		//最后一个为空值
 		List<String> recipients=new ArrayList<String>();
-		for(int i=0;i<reci.length;i++){
-			if(!reci[i].isEmpty()){
-				recipients.add(reci[i]);
+		String type = request.getParameter("type");
+		if(type!=null&&type.equals("android")){
+			String[] reci2 = reci[0].split(",");
+			for(int i=0;i<reci2.length;i++){
+				if(!reci2[i].isEmpty()){
+					recipients.add(reci2[i]);
+				}
+			}
+		}else{
+			for(int i=0;i<reci.length;i++){
+				if(!reci[i].isEmpty()){
+					recipients.add(reci[i]);
+				}
 			}
 		}
 		String docContent = request.getParameter("docContent");
@@ -327,13 +347,18 @@ public class PublishController {
 			 int i = pubService.updateDocPub(paramsMap);
 			 if(i!=0){
 				 obj.put("error", "0");
+				 obj.put("errorMsg", "");
 				 //删除原有文件
-				 if(!oldAttachmentPath.isEmpty())
+				 //没加文件不删除
+				 if(!file.isEmpty())
 				 {
-					 File delfile = new File(downloadPath+oldAttachmentPath);
-						if(delfile.exists()){
-							delfile.delete();
-						}
+					 if(!oldAttachmentPath.isEmpty())
+					 {
+						 File delfile = new File(downloadPath+oldAttachmentPath);
+							if(delfile.exists()){
+								delfile.delete();
+							}
+					 }
 				 }
 			 }
 			 else{

@@ -265,4 +265,45 @@ public class UserController {
 		return obj;
 	}
 
+	@RequestMapping(value = "/updatePassword.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject updatePassword(HttpServletRequest request,HttpServletResponse response){
+		JSONObject obj = new JSONObject();
+		String userCode = CommonUtil.getLoginUserName();
+		String oldPass = request.getParameter("oldPass") ;
+		String newPass = request.getParameter("newPass") ;
+		String oldPassword=MD5Util.string2MD5(oldPass);
+		String newPassword=MD5Util.string2MD5(newPass);
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("userCode", userCode);
+		paramsMap.put("password",newPassword);
+		try{
+			User user = userService.findByUserCode(userCode);
+			if(user!=null){
+				String password = user.getUserPassword();
+				if(password.equals(oldPassword)){
+					int result=userService.resetPassword(paramsMap);
+					if(result!=0){
+						obj.put("error",'0');
+						obj.put("errorMsg","");
+					}else{
+						obj.put("error",'1');
+						obj.put("errorMsg","修改密码失败");
+					}
+				}else{
+					obj.put("error",'1');
+					obj.put("errorMsg","原始密码有误");
+				}
+			}else{
+				obj.put("error",'1');
+				obj.put("errorMsg","修改密码失败");
+			}
+			
+		}catch(Exception e){
+			obj.put("error",'1');
+			obj.put("errorMsg","修改密码失败");
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }

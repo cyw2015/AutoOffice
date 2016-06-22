@@ -160,4 +160,34 @@ public class ResController {
 		}
 		return arr;
 	}
+	/**
+	 * 获取用户权限
+	 */
+	@RequestMapping(value = "/getResCode.do", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject getResCode(HttpServletRequest request,
+			HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String userCode = request.getParameter("userCode");
+		try{
+			List<Resource> ress = resService.findResByUserCode(userCode);
+			String str = "";
+			if(ress!=null&&ress.size()!=0){
+				for (Resource resource : ress) {
+					str =str+resource.getResourceCode()+",";
+				}
+				str = str.substring(0, str.lastIndexOf(","));
+				obj.put("error", "0");
+				obj.put("errorMsg", str);
+			}else{
+			   obj.put("error", "1");
+			   obj.put("errorMsg", "查找权限为空");
+			}
+		}catch(Exception e){
+			obj.put("error", "1");
+			obj.put("errorMsg", "查找权限出错");
+			e.printStackTrace();
+		}
+		return obj;
+	}
 }
